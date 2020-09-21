@@ -8,7 +8,27 @@ namespace MiljoBrott.Controllers
 {
 	public class CoordinatorController : Controller
 	{
-		public IActionResult Index()
+		public ViewResult CrimeCoordinator()
+		{
+			return View();
+		}
+
+		public ViewResult ReportCrime()
+		{
+			return View();
+		}
+
+		public ViewResult StartCoordinator()
+		{
+			return View();
+		}
+
+		public ViewResult Thanks()
+		{
+			return View();
+		}
+
+		public ViewResult Validate()
 		{
 			return View();
 		}

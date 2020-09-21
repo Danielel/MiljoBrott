@@ -8,7 +8,12 @@ namespace MiljoBrott.Controllers
 {
 	public class InvestigatorController : Controller
 	{
-		public IActionResult Index()
+		public ViewResult CrimeInvestigator()
+		{
+			return View();
+		}
+		
+		public ViewResult StartInvestigator()
 		{
 			return View();
 		}

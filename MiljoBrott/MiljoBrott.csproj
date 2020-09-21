@@ -4,14 +4,4 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Home\" />
-    <Folder Include="Views\Manager\" />
-    <Folder Include="Views\Investigator\" />
-    <Folder Include="Views\Coordinator\" />
-    <Folder Include="Views\Citizen\" />
-    <Folder Include="wwwroot\css\" />
-    <Folder Include="wwwroot\images\" />
-  </ItemGroup>
-
 </Project>

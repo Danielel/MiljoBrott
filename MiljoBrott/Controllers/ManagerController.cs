@@ -8,7 +8,12 @@ namespace MiljoBrott.Controllers
 {
 	public class ManagerController : Controller
 	{
-		public IActionResult Index()
+		public ViewResult CrimeManager()
+		{
+			return View();
+		}
+		
+		public ViewResult StartManager()
 		{
 			return View();
 		}
