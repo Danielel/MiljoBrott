@@ -1,5 +1,38 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+	Layout = "_CrimeContentLayout";
+}
+
+@section workerNavigation {
+	@*The Crime content part will be inbetween these 2 sections*@
+	<nav>
+		<ul>
+			<li><a class="reports" href="startCoordinator.html">Start(Ärenden)</a></li>
+			<li><a class="reportAdd" href="reportCrime.html">Rapportera brott</a></li>
+			<li class="right"><a class="logout" href="../index.html">Logga ut</a></li>
+		</ul>
+	</nav><!-- End Nav -->
+
+	<div id="content">
+		<h2>Detaljer för ärendet</h2>
+		<p class="info">Du är inloggad som samordnare</p>
+}
+
+@section workerOptions {
+	@*The Crime content part will be inbetween these 2 sections*@
+	<section id="bottomColumn">
+		<h3>Redigera ärende</h3>
+		<p>
+			Ange enhet:
+			<select name="department">
+				<option selected="selected">Välj</option>
+				<option value="unit0">Småstads Kommun</option>
+				<option value="unit1">Tekniska Avloppshantering</option>
+				<option value="unit2">Klimat och Energi</option>
+				<option value="unit3">Miljö och Hälsoskydd</option>
+				<option value="unit4">Natur och Skogsvård</option>
+				<option value="unit5">Renhållning och Avfall</option>
+			</select>
+		</p>
+		<p><input class="button" type="submit" value="Spara" /></p>
+	</section>
 }

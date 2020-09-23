@@ -10,11 +10,13 @@ namespace MiljoBrott.Controllers
 	{
 		public ViewResult Index()
 		{
+			ViewBag.Worker = "Citizen";
 			return View();
 		}
 
 		public ViewResult Login()
 		{
+			ViewBag.Worker = "Citizen";
 			return View();
 		}
 	}

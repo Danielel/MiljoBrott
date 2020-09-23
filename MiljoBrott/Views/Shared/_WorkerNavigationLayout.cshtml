@@ -1,0 +1,16 @@
+﻿@{
+	Layout = "_BaseLayout";
+}
+<nav>
+	<ul>
+		<li><a class="reports" href="startManager.html">Start(Ärenden)</a></li>
+		@{
+			if (String.Equals(ViewBag.Worker, "Coordinator"))
+			{
+				<li><a class="reportAdd" href="reportCrime.html">Rapportera brott</a></li>
+			}
+		}
+		<li class="right"><a class="logout" href="../index.html">Logga ut</a></li>
+	</ul>
+</nav><!-- End Nav -->
+@RenderBody()

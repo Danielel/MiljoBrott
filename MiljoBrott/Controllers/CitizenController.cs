@@ -10,26 +10,31 @@ namespace MiljoBrott.Controllers
 	{
 		public ViewResult Contact()
 		{
+			ViewBag.Worker = "Citizen";
 			return View();
 		}
 
 		public ViewResult Faq()
 		{
+			ViewBag.Worker = "Citizen";
 			return View();
 		}
 
 		public ViewResult Services()
 		{
+			ViewBag.Worker = "Citizen";
 			return View();
 		}
 
 		public ViewResult Thanks()
 		{
+			ViewBag.Worker = "Citizen";
 			return View();
 		}
 
 		public ViewResult Validate()
 		{
+			ViewBag.Worker = "Citizen";
 			return View();
 		}
 	}

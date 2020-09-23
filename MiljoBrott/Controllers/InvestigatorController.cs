@@ -10,11 +10,13 @@ namespace MiljoBrott.Controllers
 	{
 		public ViewResult CrimeInvestigator()
 		{
+			ViewBag.Worker = "Investigator";
 			return View();
 		}
 		
 		public ViewResult StartInvestigator()
 		{
+			ViewBag.Worker = "Investigator";
 			return View();
 		}
 	}

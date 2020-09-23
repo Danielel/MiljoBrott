@@ -1,5 +1,31 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+	Layout = "_CrimeContentLayout";
+}
+
+@section workerNavigation {
+	@*The Crime content part will be inbetween these 2 sections*@
+
+	<div id="content">
+		<h2>Detaljer för ärendet</h2>
+		<p class="info">Du är inloggad som avdelningschef</p>
+}
+
+@section workerOptions {
+	@*The Crime content part will be inbetween these 2 sections*@
+	<section id="bottomColumn">
+		<h3>Redigera ärende</h3>
+		<p>
+			Ange handläggare:
+			<select name="investigator">
+				<option selected="selected">Välj</option>
+				<option value="inv1">Ada Bengtsson</option>
+				<option value="inv2">Bengt Cederström</option>
+				<option value="inv3">Cecilia Danielsson</option>
+				<option value="inv4">David Ekström</option>
+				<option value="inv5">Erik Falkenberg</option>
+			</select>
+		</p>
+		<p><input type="checkbox" name="noAction" value="true" /> Ingen åtgärd: <input type="text" name="reason" value="Ange motivering" /></p>
+		<p><input class="button" type="submit" value="Spara" /></p>
+	</section>
 }
