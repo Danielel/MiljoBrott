@@ -4,3 +4,29 @@
 @{
 	Layout = "_WorkerStartLayout";
 }
+<div id="content">
+	<h2>Ärenden</h2>
+	<p class="info">Du är inloggad som handläggare</p>
+
+	<table id="managerForm">
+		<tr>
+			<td class="label">Välj status:</td>
+			<td>&nbsp;</td>
+			<td class="label">Ärendenummer:</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>
+				<select name="status">
+					<option selected="selected">Välj alla</option>
+					<option value="stat0">Inrapporterad</option>
+					<option value="stat1">Ingen åtgärd</option>
+					<option value="stat2">Påbörjad</option>
+					<option value="stat3">Klar</option>
+				</select>
+			</td>
+			<td><input class="button" type="submit" value="Hämta lista" /></td>
+			<td><input name="casenumber" /></td>
+			<td><input class="button" type="submit" value="Sök" /></td>
+		</tr>
+	</table>
