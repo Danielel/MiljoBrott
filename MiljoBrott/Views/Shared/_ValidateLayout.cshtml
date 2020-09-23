@@ -1,14 +1,19 @@
 ﻿<!DOCTYPE html>
 @{
 	Layout = "_WorkerNavigationLayout";
+
+	string controller = ViewBag.Worker;
+	string action = "ReportCrime";
 	if (String.Equals(ViewBag.Worker, "Citizen"))
 	{
 		Layout = "_CitizenLayout";
+		controller = "Home";
+		action = "Index";
 	}
 }
 
-@RenderBody()
 <div id="content">
+	@RenderBody()
 	<h2>Din anmälan av miljöbrott</h2>
 	@{
 		if (String.Equals(ViewBag.Worker, "Coordinator"))
@@ -26,4 +31,9 @@
 	<p><span class="label">Ditt namn (för- och efternamn):</span><br />Maja Färjedal</p>
 	<p><span class="label">Din telefon:</span><br />432-554 55 22</p>
 	<p><span class="label">Mer information:</span><br />Jag upptäckte soporna på en promenad den 24 april</p>
-	<p><a class="button" href="../index.html" id="link">Tillbaka</a> <a class="button" href="thanks.html">Bekräfta</a></p>
+	<p>
+		<a class="button" asp-controller="@controller" asp-action="@action" id="link">Tillbaka</a>
+		<a class="button" asp-controller="@ViewBag.Worker" asp-action="Thanks">Bekräfta</a>
+	</p>
+	@RenderSection("cleanup", false)
+

@@ -5,35 +5,39 @@
 	Layout = "_WorkerStartLayout";
 }
 
-<table id="managerForm">
-	<tr>
-		<td class="label">Välj status:</td>
-		<td class="label">Välj handläggare:</td>
-		<td>&nbsp;</td>
-		<td class="label">Ärendenummer:</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>
-			<select name="status">
-				<option selected="selected">Välj alla</option>
-				<option value="stat0">Inrapporterad</option>
-				<option value="stat1">Ingen åtgärd</option>
-				<option value="stat2">Påbörjad</option>
-				<option value="stat3">Klar</option>
-			</select>
-		</td>
-		<td>
-			<select name="investigator">
-				<option selected="selected">Välj alla</option>
-				<option value="inv0">Martin Kvist</option>
-				<option value="inv1">Lena Larsson</option>
-				<option value="inv2">Oskar Ivarsson</option>
-				<option value="inv3">Susanne Fred</option>
-			</select>
-		</td>
-		<td><input class="button" type="submit" value="Hämta lista" /></td>
-		<td><input name="casenumber" /></td>
-		<td><input class="button" type="submit" value="Sök" /></td>
-	</tr>
-</table>
+<div id="content">
+	<h2>Ärenden</h2>
+	<p class="info">Du är inloggad som avdelningschef</p>
+
+	<table id="managerForm">
+		<tr>
+			<td class="label">Välj status:</td>
+			<td class="label">Välj handläggare:</td>
+			<td>&nbsp;</td>
+			<td class="label">Ärendenummer:</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>
+				<select name="status">
+					<option selected="selected">Välj alla</option>
+					<option value="stat0">Inrapporterad</option>
+					<option value="stat1">Ingen åtgärd</option>
+					<option value="stat2">Påbörjad</option>
+					<option value="stat3">Klar</option>
+				</select>
+			</td>
+			<td>
+				<select name="investigator">
+					<option selected="selected">Välj alla</option>
+					<option value="inv0">Martin Kvist</option>
+					<option value="inv1">Lena Larsson</option>
+					<option value="inv2">Oskar Ivarsson</option>
+					<option value="inv3">Susanne Fred</option>
+				</select>
+			</td>
+			<td><input class="button" type="submit" value="Hämta lista" /></td>
+			<td><input name="casenumber" /></td>
+			<td><input class="button" type="submit" value="Sök" /></td>
+		</tr>
+	</table>

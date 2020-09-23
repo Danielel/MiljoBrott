@@ -3,11 +3,11 @@
 }
 <nav>
 	<ul>
-		<li><a href="index.html">Hem</a></li>
-		<li><a href="citizen/services.html">Tjänster</a></li>
-		<li><a href="citizen/faq.html">FAQ</a></li>
-		<li><a href="citizen/contact.html">Kontakt</a></li>
-		<li class="right"><a class="login" href="login.html">Logga in (endast personal)</a></li>
+		<li><a asp-controller="Home" asp-action="Index">Hem</a></li>
+		<li><a asp-controller="Citizen" asp-action="Services">Tjänster</a></li>
+		<li><a asp-controller="Citizen" asp-action="Faq">FAQ</a></li>
+		<li><a asp-controller="Citizen" asp-action="Contact">Kontakt</a></li>
+		<li class="right"><a class="login" asp-controller="Home" asp-action="Login">Logga in (endast personal)</a></li>
 	</ul>
 </nav><!-- End Nav -->
 @RenderBody()
