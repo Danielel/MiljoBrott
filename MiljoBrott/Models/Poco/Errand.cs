@@ -7,7 +7,7 @@ namespace MiljoBrott.Models
 {
 	public class Errand
 	{
-		public string ErrandId { get; set; }
+		public string ErrandID { get; set; }
 		public string Place { get; set; }
 		public string TypeOfCrime { get; set; }
 		public DateTime DateOfObservation { get; set; }
