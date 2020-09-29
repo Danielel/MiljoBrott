@@ -3,11 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MiljoBrott.Models;
 
 namespace MiljoBrott.Controllers
 {
 	public class CoordinatorController : Controller
 	{
+		private IEnvironmentalRepository repository;
+
+		public CoordinatorController(IEnvironmentalRepository repo)
+		{
+			repository = repo;
+		}
+
 		public ViewResult CrimeCoordinator()
 		{
 			ViewBag.Worker = "Coordinator";
@@ -23,7 +31,7 @@ namespace MiljoBrott.Controllers
 		public ViewResult StartCoordinator()
 		{
 			ViewBag.Worker = "Coordinator";
-			return View();
+			return View(repository);
 		}
 
 		public ViewResult Thanks()

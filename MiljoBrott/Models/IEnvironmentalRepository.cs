@@ -11,6 +11,10 @@ namespace MiljoBrott.Models
 		IQueryable<ErrandStatus> ErrandStatuses { get; }
 		IQueryable<Department> Departments { get; }
 		IQueryable<Employee> Employees { get; }
+
+		IQueryable<Employee> GetEmployeesOfRole(string roleTitle);
+
+		string GetErrandStatus(string id);
 		
 	}
 }

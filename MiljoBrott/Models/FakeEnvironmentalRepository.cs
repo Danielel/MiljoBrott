@@ -64,5 +64,24 @@ namespace MiljoBrott.Models
 			new Employee { EmployeeId = "E401", EmployeeName = "Oskar Ivarsson", RoleTitle = "investigator", DepartmentId = "D02"},
 			new Employee { EmployeeId = "E501", EmployeeName = "Susanne Fred", RoleTitle = "investigator", DepartmentId = "D03"}
 		}.AsQueryable();
+
+		public IQueryable<Employee> GetEmployeesOfRole(string roleTitle)
+		{
+			var employees = from ee in Employees
+							where ee.RoleTitle.Equals(roleTitle)
+							select ee;
+			return employees;
+		}
+		//Apperantly not needed StatusId in Errand contains the string not an id Oo
+		public string GetErrandStatus(string id)
+		{
+			var status = from es in ErrandStatuses
+						 where String.Equals(es.StatusId, id)
+						 select es;
+			var item = status.FirstOrDefault(null);
+			if (item != null)
+				return item.StatusName;
+			return null;
+		}
 	}
 }
