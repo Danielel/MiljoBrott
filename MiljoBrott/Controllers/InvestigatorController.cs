@@ -16,10 +16,11 @@ namespace MiljoBrott.Controllers
 			repository = repo;
 		}
 
-		public ViewResult CrimeInvestigator()
+		public ViewResult CrimeInvestigator(string id)
 		{
 			ViewBag.Worker = "Investigator";
-			return View();
+			ViewBag.ID = id;
+			return View(repository.ErrandStatuses);
 		}
 		
 		public ViewResult StartInvestigator()

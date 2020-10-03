@@ -15,10 +15,11 @@ namespace MiljoBrott.Controllers
 		{
 			repository = repo;
 		}
-		public ViewResult CrimeManager()
+		public ViewResult CrimeManager(string id)
 		{
 			ViewBag.Worker = "Manager";
-			return View();
+			ViewBag.ID = id;
+			return View(repository.GetEmployeesOfRole("investigator"));
 		}
 		
 		public ViewResult StartManager()

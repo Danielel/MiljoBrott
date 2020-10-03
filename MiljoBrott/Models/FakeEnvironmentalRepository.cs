@@ -78,10 +78,34 @@ namespace MiljoBrott.Models
 			var status = from es in ErrandStatuses
 						 where String.Equals(es.StatusId, id)
 						 select es;
-			var item = status.FirstOrDefault(null);
+			var item = status.FirstOrDefault();
 			if (item != null)
 				return item.StatusName;
 			return null;
 		}
+
+		public Task<Errand> GetErrand(string errandId)
+		{
+			return Task.Run(() =>
+			{
+				var errand = from err in Errands
+							 where String.Equals(err.ErrandID, errandId)
+							 select err;
+				var result = errand.FirstOrDefault();
+				return result;
+			});
+		}
+
+		public static string FormatPhoneNumber(string number)
+		{
+			int length = number.Length;
+			if (length >= 10)
+			{
+				number = number.Insert(length - 2, " ");
+				number = number.Insert(length - 4, " ");
+			}
+			return number;
+		}
+		
 	}
 }
