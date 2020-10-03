@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MiljoBrott.Models;
 
 namespace MiljoBrott.Controllers
 {
@@ -32,10 +33,10 @@ namespace MiljoBrott.Controllers
 			return View();
 		}
 
-		public ViewResult Validate()
+		public ViewResult Validate(Errand errand)
 		{
 			ViewBag.Worker = "Citizen";
-			return View();
+			return View(errand);
 		}
 	}
 }

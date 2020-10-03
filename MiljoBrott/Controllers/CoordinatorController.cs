@@ -41,10 +41,10 @@ namespace MiljoBrott.Controllers
 			return View();
 		}
 
-		public ViewResult Validate()
+		public ViewResult Validate(Errand errand)
 		{
 			ViewBag.Worker = "Coordinator";
-			return View();
+			return View(errand);
 		}
 	}
 }
