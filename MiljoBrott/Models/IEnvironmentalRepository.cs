@@ -14,9 +14,9 @@ namespace MiljoBrott.Models
 
 		IQueryable<Employee> GetEmployeesOfRole(string roleTitle);
 
-		string GetErrandStatus(string id);
-
 		Task<Errand> GetErrand(string errandId);
-		
+
+		//string GetErrandStatus(string id);
+
 	}
 }

@@ -72,17 +72,7 @@ namespace MiljoBrott.Models
 							select ee;
 			return employees;
 		}
-		//Apperantly not needed StatusId in Errand contains the string not an id Oo
-		public string GetErrandStatus(string id)
-		{
-			var status = from es in ErrandStatuses
-						 where String.Equals(es.StatusId, id)
-						 select es;
-			var item = status.FirstOrDefault();
-			if (item != null)
-				return item.StatusName;
-			return null;
-		}
+		
 
 		public Task<Errand> GetErrand(string errandId)
 		{
@@ -96,6 +86,19 @@ namespace MiljoBrott.Models
 			});
 		}
 
+		/*
+		//Apperantly not needed StatusId in Errand contains the string not an id Oo
+		public string GetErrandStatus(string id)
+		{
+			var status = from es in ErrandStatuses
+						 where String.Equals(es.StatusId, id)
+						 select es;
+			var item = status.FirstOrDefault();
+			if (item != null)
+				return item.StatusName;
+			return null;
+		}
+
 		public static string FormatPhoneNumber(string number)
 		{
 			int length = number.Length;
@@ -105,7 +108,7 @@ namespace MiljoBrott.Models
 				number = number.Insert(length - 4, " ");
 			}
 			return number;
-		}
+		}*/
 		
 	}
 }
