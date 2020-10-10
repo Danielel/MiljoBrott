@@ -7,7 +7,7 @@ namespace MiljoBrott.Models
 {
 	public class Sequence
 	{
-		public string StatusId { get; set; }
-		public string StatusName { get; set; }
+		public int Id { get; set; }
+		public int CurrentValue { get; set; }
 	}
 }

@@ -7,7 +7,8 @@ namespace MiljoBrott.Models
 {
 	public class Sample
 	{
-		public string StatusId { get; set; }
-		public string StatusName { get; set; }
+		public int SampleId { get; set; }
+		public string SampleName { get; set; }
+		public int ErrandId { get; set; }
 	}
 }

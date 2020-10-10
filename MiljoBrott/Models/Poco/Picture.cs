@@ -7,7 +7,8 @@ namespace MiljoBrott.Models
 {
 	public class Picture
 	{
-		public string StatusId { get; set; }
-		public string StatusName { get; set; }
+		public int PictureId { get; set; }
+		public string PictureName { get; set; }
+		public int ErrandId { get; set; }
 	}
 }
