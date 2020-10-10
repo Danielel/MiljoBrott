@@ -16,7 +16,7 @@ namespace MiljoBrott.Controllers
 			repository = repo;
 		}
 
-		public ViewResult CrimeInvestigator(string id)
+		public ViewResult CrimeInvestigator(int id)
 		{
 			ViewBag.Worker = "Investigator";
 			ViewBag.ID = id;

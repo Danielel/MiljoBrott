@@ -17,7 +17,7 @@ namespace MiljoBrott.Components
 			repository = repo;
 		}
 
-		public async Task<IViewComponentResult> InvokeAsync(string id)
+		public async Task<IViewComponentResult> InvokeAsync(int id)
 		{
 			
 			return View(await repository.GetErrand(id));

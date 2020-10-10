@@ -74,12 +74,12 @@ namespace MiljoBrott.Models
 		}
 		
 
-		public Task<Errand> GetErrand(string errandId)
+		public Task<Errand> GetErrand(int errandId)
 		{
 			return Task.Run(() =>
 			{
 				var errand = from err in Errands
-							 where String.Equals(err.ErrandID, errandId)
+							 where err.ErrandID == errandId
 							 select err;
 				var result = errand.FirstOrDefault();
 				return result;
