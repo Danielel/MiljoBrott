@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MiljoBrott.Infrastructure;
 using MiljoBrott.Models;
 
 namespace MiljoBrott.Controllers
@@ -26,7 +27,11 @@ namespace MiljoBrott.Controllers
 		public ViewResult ReportCrime()
 		{
 			ViewBag.Worker = "Coordinator";
-			return View();
+			var errand = HttpContext.Session.GetJson<Errand>("ErrandCreation");
+			if (errand == null)
+				return View();
+			else
+				return View(errand);
 		}
 
 		public ViewResult StartCoordinator()
@@ -38,12 +43,14 @@ namespace MiljoBrott.Controllers
 		public ViewResult Thanks()
 		{
 			ViewBag.Worker = "Coordinator";
+			HttpContext.Session.Remove("ErrandCreation");
 			return View();
 		}
 
 		public ViewResult Validate(Errand errand)
 		{
 			ViewBag.Worker = "Coordinator";
+			HttpContext.Session.SetJson("ErrandCreation", errand);
 			return View(errand);
 		}
 	}

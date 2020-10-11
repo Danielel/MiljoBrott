@@ -19,6 +19,7 @@ namespace MiljoBrott
 		{
 			services.AddTransient<IEnvironmentalRepository, FakeEnvironmentalRepository>();
 			services.AddControllersWithViews();
+			services.AddSession();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,7 +34,7 @@ namespace MiljoBrott
 			app.UseStaticFiles();
 			app.UseRouting();
 
-
+			app.UseSession();
 
 			app.UseEndpoints(endpoints =>
 			{

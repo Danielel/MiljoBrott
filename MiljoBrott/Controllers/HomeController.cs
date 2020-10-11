@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MiljoBrott.Infrastructure;
 using MiljoBrott.Models;
 
 namespace MiljoBrott.Controllers
@@ -16,10 +17,16 @@ namespace MiljoBrott.Controllers
 			repository = repo;
 		}
 
+
+
 		public ViewResult Index()
 		{
 			ViewBag.Worker = "Citizen";
-			return View();
+			var errand = HttpContext.Session.GetJson<Errand>("ErrandCreation");
+			if (errand == null)
+				return View();
+			else
+				return View(errand);			
 		}
 
 		public ViewResult Login()
