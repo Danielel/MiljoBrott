@@ -40,18 +40,25 @@ namespace MiljoBrott.Controllers
 			return View(repository);
 		}
 
-		public ViewResult Thanks()
-		{
-			ViewBag.Worker = "Coordinator";
-			HttpContext.Session.Remove("ErrandCreation");
-			return View();
-		}
-
 		public ViewResult Validate(Errand errand)
 		{
 			ViewBag.Worker = "Coordinator";
 			HttpContext.Session.SetJson("ErrandCreation", errand);
 			return View(errand);
 		}
+
+		public ViewResult Thanks()
+		{
+			ViewBag.Worker = "Coordinator";
+			var errand = HttpContext.Session.GetJson<Errand>("ErrandCreation");
+			string refNumber = repository.SaveErrand(errand);
+			ViewBag.Ref = refNumber;
+			HttpContext.Session.Remove("ErrandCreation");
+			if (errand == null)
+				throw new Exception("Got to thanks page without errand object");
+			else
+				return View();
+		}
+
 	}
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MiljoBrott.Models
 {
-	public class FakeEnvironmentalRepository : IEnvironmentalRepository
+	public class FakeEnvironmentalRepository //: IEnvironmentalRepository
 	{
 		public IQueryable<Errand> Errands => new List<Errand>
 		{
