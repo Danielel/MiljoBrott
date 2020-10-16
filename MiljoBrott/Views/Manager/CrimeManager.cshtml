@@ -1,32 +1,44 @@
 ﻿@{
 	Layout = "_WorkerNavigationLayout";
 }
-@model IEnumerable<Employee>
+@*@model IEnumerable<Employee>*@
+@model Errand
 
 <div id="content">
 	<h2>Detaljer för ärendet</h2>
 	<p class="info">Du är inloggad som avdelningschef</p>
-@await Component.InvokeAsync("CrimeContent", ViewBag.ID)
+	@await Component.InvokeAsync("CrimeContent", ViewBag.ID)
 
 
-@*The Crime content part will be inbetween these 2 sections*@
-<section id="bottomColumn">
-	<h3>Redigera ärende</h3>
-	<p>
-		Ange handläggare:
-		<select name="investigator">
-			<option selected="selected">Välj</option>
-			@foreach (Employee ee in Model)
-			{
-				<option value="@ee.EmployeeId">@ee.EmployeeName</option>
-			}
-			@*<option value="inv1">Ada Bengtsson</option>
-			<option value="inv2">Bengt Cederström</option>
-			<option value="inv3">Cecilia Danielsson</option>
-			<option value="inv4">David Ekström</option>
-			<option value="inv5">Erik Falkenberg</option>*@
-		</select>
-	</p>
-	<p><input type="checkbox" name="noAction" value="true" /> Ingen åtgärd: <input type="text" name="reason" value="Ange motivering" /></p>
-	<p><input class="button" type="submit" value="Spara" /></p>
-</section>
+	@*The Crime content part will be inbetween these 2 sections*@
+	<section id="bottomColumn">
+		<form asp-controller="Manager" asp-action="AssignInvestigator" asp-route-id="@ViewBag.ID" method="post">
+			<h3>Redigera ärende</h3>
+			<p>
+				Ange handläggare:
+				<select asp-for="EmployeeId" asp-items="@(new SelectList(ViewBag.Employees, "EmployeeId", "EmployeeName"))">
+
+					@*<select asp-for="Item1.EmployeeId" asp-items="@(list)">*@
+					<option selected="selected">Välj</option>
+				</select>
+			</p>
+			@*<span class="label">Vilken typ av brott?</span><br />*@
+			<input type="checkbox" asp-for="StatusId" /> Ingen åtgärd: <input asp-for="InvestigatorInfo" value="Ange motivering" />
+			<p><input class="button" type="submit" value="Spara" /></p>
+		</form>
+		@*
+		<h3>Redigera ärende</h3>
+		<p>
+			Ange handläggare:
+			<select name="investigator">
+				<option selected="selected">Välj</option>
+				@foreach (Employee ee in Model)
+				{
+					<option value="@ee.EmployeeId">@ee.EmployeeName</option>
+				}
+			</select>
+		</p>
+		<p><input type="checkbox" name="noAction" value="true" /> Ingen åtgärd: <input type="text" name="reason" value="Ange motivering" /></p>
+		<p><input class="button" type="submit" value="Spara" /></p>
+			*@
+	</section>

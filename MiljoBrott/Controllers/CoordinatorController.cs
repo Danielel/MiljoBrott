@@ -21,7 +21,23 @@ namespace MiljoBrott.Controllers
 		{
 			ViewBag.Worker = "Coordinator";
 			ViewBag.ID = id;
-			return View(repository.Departments);
+			ViewBag.Departments = repository.GetDepartmentsExcluding("D00"); //ugly
+			return View();
+		}
+
+		public IActionResult DepartmentChange(Department dep, int id)
+		{
+			int errandId = id;
+			if (!(dep.DepartmentId.Equals("Välj")))
+			{
+				Task<Errand> taskOfErrand = repository.GetErrand(errandId);
+				Errand errand = taskOfErrand.Result;
+				errand.DepartmentId = dep.DepartmentId;
+
+				repository.UpdateErrand(errand);
+
+			}
+			return RedirectToAction("CrimeCoordinator",  new { id = errandId });
 		}
 
 		public ViewResult ReportCrime()

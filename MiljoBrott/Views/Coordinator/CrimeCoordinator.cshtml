@@ -3,7 +3,8 @@
 	Layout = "_WorkerNavigationLayout";
 
 }
-@model IEnumerable<Department>
+@*@model IEnumerable<Department>*@
+@model Department
 @*The Crime content part will be inbetween these 2 sections*@
 
 <div id="content">
@@ -13,23 +14,18 @@
 	@await Component.InvokeAsync("CrimeContent", ViewBag.ID)
 
 	@*The Crime content part will be inbetween these 2 sections*@
-	<section id="bottomColumn">
+<section id="bottomColumn">
+	<form asp-controller="Coordinator" asp-action="DepartmentChange" asp-route-id="@ViewBag.ID" method="post">
 		<h3>Redigera ärende</h3>
 		<p>
 			Ange enhet:
-			<select name="department">
+			@{ 
+				var list = new SelectList(ViewBag.Departments, "DepartmentId", "DepartmentName");
+			}
+			<select asp-for="DepartmentId" asp-items="@(list)">
 				<option selected="selected">Välj</option>
-				@*<option value="unit0">Småstads Kommun</option>
-				<option value="unit1">Tekniska Avloppshantering</option>
-				<option value="unit2">Klimat och Energi</option>
-				<option value="unit3">Miljö och Hälsoskydd</option>
-				<option value="unit4">Natur och Skogsvård</option>
-				<option value="unit5">Renhållning och Avfall</option>*@
-				@foreach (Department dep in Model)
-				{
-					<option value="@dep.DepartmentId">@dep.DepartmentName</option>
-				}
 			</select>
 		</p>
 		<p><input class="button" type="submit" value="Spara" /></p>
-	</section>
+	</form>
+</section>

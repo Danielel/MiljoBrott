@@ -18,10 +18,34 @@ namespace MiljoBrott.Controllers
 		public ViewResult CrimeManager(int id)
 		{
 			ViewBag.Worker = "Manager";
+			ViewBag.Employees = repository.GetEmployeesOfRole("investigator");
 			ViewBag.ID = id;
-			return View(repository.GetEmployeesOfRole("investigator"));
+			return View();
+			//repository.GetEmployeesOfRole("investigator")
 		}
-		
+
+		public IActionResult AssignInvestigator(Errand errand, int id)
+		{
+			int errandId = id;
+
+			Task<Errand> taskOfErrand = repository.GetErrand(errandId);
+			Errand errandFromDb = taskOfErrand.Result;
+			if (errand.StatusId.Equals("true"))
+			{
+				errandFromDb.StatusId = "S_B"; //Perhaps get from method instead
+				errandFromDb.InvestigatorInfo = errand.InvestigatorInfo;
+
+				repository.UpdateErrand(errandFromDb);
+			}
+			else
+			{
+				errandFromDb.EmployeeId = errand.EmployeeId;
+				repository.UpdateErrand(errandFromDb);
+			}
+
+			return RedirectToAction("CrimeManager", new { id = errandFromDb.ErrandID });
+		}
+
 		public ViewResult StartManager()
 		{
 			ViewBag.Worker = "Manager";

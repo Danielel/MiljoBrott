@@ -39,6 +39,13 @@ namespace MiljoBrott.Models
 			return employees;
 		}
 
+		public IQueryable<Department> GetDepartmentsExcluding(string departmentId)
+		{
+			return from dep in Departments
+				   where !dep.DepartmentId.Equals(departmentId)
+				   select dep;
+		}
+
 
 		public Task<Errand> GetErrand(int errandId)
 		{

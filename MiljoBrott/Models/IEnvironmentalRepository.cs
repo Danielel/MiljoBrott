@@ -17,6 +17,8 @@ namespace MiljoBrott.Models
 
 		IQueryable<Employee> GetEmployeesOfRole(string roleTitle);
 
+		IQueryable<Department> GetDepartmentsExcluding(string departmentId);
+
 		Task<Errand> GetErrand(int errandId);
 
 		string SaveErrand(Errand errand);
