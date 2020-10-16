@@ -21,6 +21,10 @@ namespace MiljoBrott.Models
 
 		Task<Errand> GetErrand(int errandId);
 
+		Picture AddNewPicture(int errandId, string fileName);
+
+		Sample AddNewSample(int errandId, string fileName);
+
 		string SaveErrand(Errand errand);
 
 		bool UpdateErrand(Errand errand);

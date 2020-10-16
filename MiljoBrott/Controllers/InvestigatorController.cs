@@ -65,16 +65,17 @@ namespace MiljoBrott.Controllers
 			if (!(sampleExists || imageExists || errandExists))
 				return RedirectToAction("CrimeInvestigator", new { id = errandId });
 
-			//string sampleFileName;
 
 			Errand dbErrand = await repository.GetErrand(errandId);
 			if (sampleExists)
 			{
 				string sampleFileName = await CreateAndSaveFile(loadSample, "samples");
+				repository.AddNewSample(errandId, sampleFileName);
 			}
 			if(imageExists)
 			{
 				string imageFileName = await CreateAndSaveFile(loadImage, "inv_images");
+				repository.AddNewSample(errandId, imageFileName);
 			}
 			if(infoExists)
 				dbErrand.InvestigatorInfo = dbErrand.InvestigatorInfo + errand.InvestigatorInfo + "\n";
@@ -86,73 +87,7 @@ namespace MiljoBrott.Controllers
 			repository.UpdateErrand(dbErrand);
 			return RedirectToAction("CrimeInvestigator", new { id = errandId });
 		}
-		/*
-		private async Task<IActionResult> SSSTakeFileD(IFormFile loadSample, IFormFile loadImage, Errand errand)
-		{
-			int errandId;
-			if (TempData.ContainsKey("I_ID"))
-				errandId = int.Parse(TempData["I_ID"].ToString()); //Unsafe from multiple tabs etcetera
-			else
-			{
-				Task<RedirectToActionResult> taskA = Task<RedirectToActionResult>.Run(() => { return RedirectToAction("StartInvestigator"); });
-				return await taskA; //await so we can return
-				return RedirectToAction("StartInvestigator"); //error message
-			}
-
-			bool sampleExists = !(loadSample is null) && loadSample.Length > 0;
-			bool imageExists = !(loadImage is null) && loadImage.Length > 0;
-			bool errandExists = ErrandSaveDataExists(errand);
-
-			if (!(sampleExists || imageExists || errandExists))
-				return RedirectToAction("CrimeInvestigator", new { id = 1 });
-
-			if (!(loadSample is null) && loadSample.Length > 0)
-				await CreateAndSaveFile(loadSample, "samples");
-			if (!(loadImage is null) && loadImage.Length > 0)
-				await CreateAndSaveFile(loadImage, "images");
-			var tempPath = Path.GetTempFileName();
-			var path = Path.Combine(environment.WebRootPath, "samples", loadSample.FileName);
-			if (loadSample.Length > 0)
-			{
-				if (loadImage.Length > 0)
-				{
-					//Party
-				}
-				using (var stream = new FileStream(tempPath, FileMode.Create))
-				{
-					await loadSample.CopyToAsync(stream);
-				}
-			}
-			System.IO.File.Move(tempPath, path);
-			return RedirectToAction("CrimeInvestigator", new { id = 0 });
-		}
-
-		public IActionResult InvestigateErrand(IFormFile loadSample, IFormFile loadImage, Errand errand)
-		{
-			int errandId;
-			if (TempData.ContainsKey("I_ID"))
-				errandId = int.Parse(TempData["I_ID"].ToString()); //Unsafe from multiple tabs etcetera
-			else
-				return RedirectToAction("StartInvestigator"); //error message
-
-			Task<Errand> taskOfErrand = repository.GetErrand(errandId);
-			Errand errandFromDb = taskOfErrand.Result;
-			if (errand.StatusId.Equals("true"))
-			{
-				errandFromDb.StatusId = "S_B"; //Perhaps get from method instead
-				errandFromDb.InvestigatorInfo = errand.InvestigatorInfo;
-
-				repository.UpdateErrand(errandFromDb);
-			}
-			else
-			{
-				errandFromDb.EmployeeId = errand.EmployeeId;
-				repository.UpdateErrand(errandFromDb);
-			}
-
-			return RedirectToAction("CrimeInvestigator", new { id = errandFromDb.ErrandID });
-		}
-		*/
+		
 		public ViewResult StartInvestigator()
 		{
 			ViewBag.Worker = "Investigator";

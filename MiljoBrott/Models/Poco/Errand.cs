@@ -19,9 +19,9 @@ namespace MiljoBrott.Models
 		[Required(ErrorMessage = "Du måste skriva typen av brott")]
 		public string TypeOfCrime { get; set; }
 
-	
+
 		[DataType(DataType.Date)]
-		[DisplayFormat(DataFormatString="{0:yyyy-MM-dd}")]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
 		[Required(ErrorMessage = "Du måste skriva in ett datum")]
 		//regex från https://regexlib.com/REDetails.aspx?regexp_id=190
 		[RegularExpression(pattern: @"^(?:(?:(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00)))(\/|-|\.)(?:0?2\1(?:29)))|(?:(?:(?:1[6-9]|[2-9]\d)?\d{2})(\/|-|\.)(?:(?:(?:0?[13578]|1[02])\2(?:31))|(?:(?:0?[1,3-9]|1[0-2])\2(29|30))|(?:(?:0?[1-9])|(?:1[0-2]))\2(?:0?[1-9]|1\d|2[0-8]))))$", ErrorMessage = "Datum skrivs som år-månad-dag")]
@@ -39,5 +39,7 @@ namespace MiljoBrott.Models
 		public string DepartmentId { get; set; }
 		public string EmployeeId { get; set; }
 
+		public ICollection<Sample> Samples { get; set; }
+		public ICollection<Picture> Pictures { get; set; }
 	}
 }

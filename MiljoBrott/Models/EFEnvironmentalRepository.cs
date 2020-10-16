@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Diagnostics;
@@ -17,7 +18,8 @@ namespace MiljoBrott.Models
 			context = cont;
 		}
 
-		public IQueryable<Errand> Errands => context.Errands;
+		//public IQueryable<Errand> Errands => context.Errands;
+		public IQueryable<Errand> Errands => context.Errands.Include(e => e.Samples).Include(e=>e.Pictures);
 
 		public IQueryable<ErrandStatus> ErrandStatuses => context.ErrandStatuses;
 
@@ -92,6 +94,24 @@ namespace MiljoBrott.Models
 				UpdateErrand(errand);
 			}
 			return errand.RefNumber;
+		}
+		
+		public Sample AddNewSample(int errandId, string fileName)
+		{
+			Sample sample = new Sample { ErrandId = errandId, SampleName = fileName, SampleId = 0 };
+			
+			context.Samples.Add(sample);
+			context.SaveChanges();
+			return sample;
+		}
+		
+		public Picture AddNewPicture(int errandId, string fileName)
+		{
+			Picture pic = new Picture { ErrandId = errandId, PictureName = fileName, PictureId = 0 };
+			
+			context.Pictures.Add(pic);
+			context.SaveChanges();
+			return pic;
 		}
 
 		//Returns true if there was an errand of matching id that was updated.
