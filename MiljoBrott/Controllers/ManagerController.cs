@@ -38,8 +38,11 @@ namespace MiljoBrott.Controllers
 			}
 			else
 			{
-				errandFromDb.EmployeeId = errand.EmployeeId; //Change errand status?
-				repository.UpdateErrand(errandFromDb);
+				if (!errand.EmployeeId.Equals("Välj"))
+				{
+					errandFromDb.EmployeeId = errand.EmployeeId; //Change errand status?
+					repository.UpdateErrand(errandFromDb);
+				}
 			}
 
 			return RedirectToAction("CrimeManager", new { id = errandFromDb.ErrandID });

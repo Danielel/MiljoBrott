@@ -78,9 +78,19 @@ namespace MiljoBrott.Controllers
 				repository.AddNewPicture(errandId, imageFileName);
 			}
 			if(infoExists)
-				dbErrand.InvestigatorInfo = dbErrand.InvestigatorInfo + errand.InvestigatorInfo + "\n";
+			{
+				if(dbErrand.InvestigatorInfo is null)
+					dbErrand.InvestigatorInfo = dbErrand.InvestigatorInfo + errand.InvestigatorInfo;
+				else
+					dbErrand.InvestigatorInfo =  dbErrand.InvestigatorInfo + " " + errand.InvestigatorInfo;
+			}
 			if(actionExists)
-				dbErrand.InvestigatorAction = dbErrand.InvestigatorAction + errand.InvestigatorAction + "\n";
+			{
+				if (dbErrand.InvestigatorAction is null)
+					dbErrand.InvestigatorAction = dbErrand.InvestigatorAction + errand.InvestigatorAction;
+				else
+					dbErrand.InvestigatorAction = dbErrand.InvestigatorAction + " " + errand.InvestigatorAction;
+			}
 			if(statusExists)
 				dbErrand.StatusId = errand.StatusId;
 

@@ -57,7 +57,6 @@
 			{
 				foreach (Sample sample in Model.Samples)
 				{
-					@*<a asp-controller="ShowFile" asp-action="DownloadSample" asp-route-id="@sample.SampleId">@sample.SampleName</a>*@
 					<a href="~/samples/@sample.SampleName">@sample.SampleName</a>
 				}
 			}
@@ -83,9 +82,8 @@
 				{
 					foreach (Picture pic in Model.Pictures)
 					{
-						@*<a asp-controller="ShowFile" asp-action="ShowImage" asp-route-id="@pic.PictureId">@pic.PictureName</a>*@
-					<a href="~/inv_images/@pic.PictureName">@pic.PictureName</a>
-				}
+						<a href="~/inv_images/@pic.PictureName">@pic.PictureName</a>
+					}
 				}
 				else
 				{

@@ -26,19 +26,4 @@
 			<input type="checkbox" name="noAction" value="true" /> Ingen åtgärd: <input asp-for="InvestigatorInfo" value="Ange motivering" />
 			<p><input class="button" type="submit" value="Spara" /></p>
 		</form>
-		@*
-		<h3>Redigera ärende</h3>
-		<p>
-			Ange handläggare:
-			<select name="investigator">
-				<option selected="selected">Välj</option>
-				@foreach (Employee ee in Model)
-				{
-					<option value="@ee.EmployeeId">@ee.EmployeeName</option>
-				}
-			</select>
-		</p>
-		<p><input type="checkbox" name="noAction" value="true" /> Ingen åtgärd: <input type="text" name="reason" value="Ange motivering" /></p>
-		<p><input class="button" type="submit" value="Spara" /></p>
-			*@
 	</section>
