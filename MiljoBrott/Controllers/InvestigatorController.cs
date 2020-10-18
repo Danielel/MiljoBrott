@@ -28,7 +28,7 @@ namespace MiljoBrott.Controllers
 		public ViewResult CrimeInvestigator(int id)
 		{
 			ViewBag.Worker = "Investigator";
-			ViewBag.Statuses = repository.ErrandStatuses; //ugly
+			ViewBag.Statuses = repository.GetInvestigatorErrandStatuses();
 			ViewBag.ID = id;
 			return View();
 		}
@@ -75,7 +75,7 @@ namespace MiljoBrott.Controllers
 			if(imageExists)
 			{
 				string imageFileName = await CreateAndSaveFile(loadImage, "inv_images");
-				repository.AddNewSample(errandId, imageFileName);
+				repository.AddNewPicture(errandId, imageFileName);
 			}
 			if(infoExists)
 				dbErrand.InvestigatorInfo = dbErrand.InvestigatorInfo + errand.InvestigatorInfo + "\n";

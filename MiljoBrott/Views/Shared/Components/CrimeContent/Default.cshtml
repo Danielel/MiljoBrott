@@ -52,18 +52,46 @@
 	</p>
 	<p>
 		<span class="label">Provtagning: </span><br />
-		Provtagning.pdf
-	</p>
-	<p>
-		<span class="label">Ytterligare information: </span><br />
-		@Model.InvestigatorInfo
-	</p>
-	<p>
-		<span class="label">Händelser: </span><br />
-		@Model.InvestigatorAction
-	</p>
-	<p>
-		<span class="label">Bilder: </span><br />
-		<img src="~/images/imagetest.jpg" alt="klicka på bilden" />
+		@{
+			if (Model.Samples.Count >= 1)
+			{
+				foreach (Sample sample in Model.Samples)
+				{
+					@*<a asp-controller="ShowFile" asp-action="DownloadSample" asp-route-id="@sample.SampleId">@sample.SampleName</a>*@
+					<a href="~/samples/@sample.SampleName">@sample.SampleName</a>
+				}
+			}
+			else
+			{
+				string s = "Finns inga prover.";
+				@s
+			}
+		}
+		</p>
+		<p>
+			<span class="label">Ytterligare information: </span><br />
+			@Model.InvestigatorInfo
+		</p>
+		<p>
+			<span class="label">Händelser: </span><br />
+			@Model.InvestigatorAction
+		</p>
+		<p>
+			<span class="label">Bilder: </span><br />
+			@{
+				if (Model.Pictures.Count >= 1)
+				{
+					foreach (Picture pic in Model.Pictures)
+					{
+						@*<a asp-controller="ShowFile" asp-action="ShowImage" asp-route-id="@pic.PictureId">@pic.PictureName</a>*@
+					<a href="~/inv_images/@pic.PictureName">@pic.PictureName</a>
+				}
+				}
+				else
+				{
+					string s = "Finns inga bilder.";
+					@s
+				}
+			}
 	</p>
 </section>

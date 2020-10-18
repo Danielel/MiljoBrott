@@ -25,11 +25,15 @@ namespace MiljoBrott.Models
 
 		Sample AddNewSample(int errandId, string fileName);
 
+		Picture GetPicture(int pictureId);
+		Sample GetSample(int sampleId);
 		string SaveErrand(Errand errand);
 
 		bool UpdateErrand(Errand errand);
 
 		int GetSequenceNumber();
+
+		IQueryable<ErrandStatus> GetInvestigatorErrandStatuses();
 
 		//string GetErrandStatus(string id);
 

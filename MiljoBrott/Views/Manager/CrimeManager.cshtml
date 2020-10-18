@@ -23,7 +23,7 @@
 				</select>
 			</p>
 			@*<span class="label">Vilken typ av brott?</span><br />*@
-			<input type="checkbox" asp-for="StatusId" /> Ingen åtgärd: <input asp-for="InvestigatorInfo" value="Ange motivering" />
+			<input type="checkbox" name="noAction" value="true" /> Ingen åtgärd: <input asp-for="InvestigatorInfo" value="Ange motivering" />
 			<p><input class="button" type="submit" value="Spara" /></p>
 		</form>
 		@*

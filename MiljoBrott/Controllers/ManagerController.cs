@@ -21,16 +21,15 @@ namespace MiljoBrott.Controllers
 			ViewBag.Employees = repository.GetEmployeesOfRole("investigator");
 			ViewBag.ID = id;
 			return View();
-			//repository.GetEmployeesOfRole("investigator")
 		}
 
-		public IActionResult AssignInvestigator(Errand errand, int id)
+		public IActionResult AssignInvestigator(Errand errand, int id, bool noAction)
 		{
 			int errandId = id;
 
 			Task<Errand> taskOfErrand = repository.GetErrand(errandId);
 			Errand errandFromDb = taskOfErrand.Result;
-			if (errand.StatusId.Equals("true"))
+			if (noAction)
 			{
 				errandFromDb.StatusId = "S_B"; //Perhaps get from method instead
 				errandFromDb.InvestigatorInfo = errand.InvestigatorInfo;
@@ -39,7 +38,7 @@ namespace MiljoBrott.Controllers
 			}
 			else
 			{
-				errandFromDb.EmployeeId = errand.EmployeeId;
+				errandFromDb.EmployeeId = errand.EmployeeId; //Change errand status?
 				repository.UpdateErrand(errandFromDb);
 			}
 

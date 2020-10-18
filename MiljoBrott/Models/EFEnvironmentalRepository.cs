@@ -114,6 +114,23 @@ namespace MiljoBrott.Models
 			return pic;
 		}
 
+		public Picture GetPicture(int pictureId)
+		{
+			var picture = from pic in Pictures
+							where pic.PictureId.Equals(pictureId)
+							select pic;
+			var result = picture.FirstOrDefault();
+			return result;
+		}
+		public Sample GetSample(int sampleId)
+		{
+			var sample = from sa in Samples
+							where sa.SampleId.Equals(sampleId)
+							select sa;
+			var result = sample.FirstOrDefault();
+			return result;
+		}
+
 		//Returns true if there was an errand of matching id that was updated.
 		public bool UpdateErrand(Errand errand)
 		{
@@ -142,6 +159,13 @@ namespace MiljoBrott.Models
 				return false;
 		}
 
-		
+		public IQueryable<ErrandStatus> GetInvestigatorErrandStatuses()
+		{
+			return from es in ErrandStatuses
+				   where !es.StatusId.Equals("S_A") && !es.StatusId.Equals("S_B")
+				   select es;
+		}
+
+
 	}
 }
