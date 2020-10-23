@@ -10,23 +10,36 @@ using MiljoBrott.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing.Constraints;
 using System.Reflection.Metadata.Ecma335;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MiljoBrott.Controllers
 {
+	[Authorize(Roles = "Investigator")]
 	public class InvestigatorController : Controller
 	{
 		private IEnvironmentalRepository repository;
 		private IWebHostEnvironment environment;
+		private IHttpContextAccessor contextAcc;
 
-		public InvestigatorController(IEnvironmentalRepository repo, IWebHostEnvironment envi)
+		public InvestigatorController(IEnvironmentalRepository repo, IWebHostEnvironment envi, IHttpContextAccessor cont)
 		{
 			repository = repo;
 
+			contextAcc = cont;
 			environment = envi;
+		}
+
+		private async Task<Employee> GetEmployeeData()
+		{
+			var userName = contextAcc.HttpContext.User.Identity.Name; //Gna be needed
+			Employee employee = await repository.GetEmployee(userName);
+			ViewBag.Worker = employee.RoleTitle;
+			return employee;
 		}
 
 		public ViewResult CrimeInvestigator(int id)
 		{
+			var userName = contextAcc.HttpContext.User.Identity.Name; //Gna be needed
 			ViewBag.Worker = "Investigator";
 			ViewBag.Statuses = repository.GetInvestigatorErrandStatuses();
 			ViewBag.ID = id;
@@ -50,7 +63,9 @@ namespace MiljoBrott.Controllers
 
 		private (bool info, bool action, bool status) ErrandSaveDataExists(Errand errand)
 		{
-			return (!(errand.InvestigatorInfo is null), !(errand.InvestigatorAction is null), !(errand.StatusId.Equals("Välj")));
+			return (!(errand.InvestigatorInfo is null), 
+				!(errand.InvestigatorAction is null), 
+				!(errand.StatusId.Equals("Välj")));
 		}
 
 		public async Task<IActionResult> InvestigatorDataUpload(IFormFile loadSample, IFormFile loadImage, Errand errand, int id)
@@ -98,10 +113,12 @@ namespace MiljoBrott.Controllers
 			return RedirectToAction("CrimeInvestigator", new { id = errandId });
 		}
 		
-		public ViewResult StartInvestigator()
+		public async Task<ViewResult> StartInvestigator()
 		{
-			ViewBag.Worker = "Investigator";
-			return View(repository);
+			Employee currentEmployee = await GetEmployeeData();
+			ViewBag.employeeID = currentEmployee.EmployeeId;
+
+			return View(repository.ErrandStatuses);
 		}
 	}
 }

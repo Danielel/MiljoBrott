@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,8 +9,9 @@ namespace MiljoBrott.Models
 {
 	public class DbInitializer
 	{
-		public static void EnsurePopulated(ApplicationDbContext context)
+		public static void EnsurePopulated(IServiceProvider services)
 		{
+            var context = services.GetRequiredService<ApplicationDbContext>();
             if (!context.Departments.Any())
             {
                 context.Departments.AddRange(

@@ -17,14 +17,20 @@ namespace MiljoBrott
 		public static void Main(string[] args)
 		{
 			var host = CreateHostBuilder(args).Build();
+			InitializeDatabase(host);
 
+			host.Run();
+		}
+
+		private static void InitializeDatabase(IHost host)
+		{
 			using (var scope = host.Services.CreateScope())
 			{
 				var services = scope.ServiceProvider;
 				try
 				{
-					var context = services.GetRequiredService<ApplicationDbContext>();
-					DbInitializer.EnsurePopulated(context);
+					DbInitializer.EnsurePopulated(services);
+					IdentityInitializer.EnsurePopulated(services).Wait();
 				}
 				catch (Exception e)
 				{
@@ -32,8 +38,6 @@ namespace MiljoBrott
 					logger.LogError(e, "Databasen kunde inte fyllas.");
 				}
 			}
-
-			host.Run();
 		}
 
 		public static IHostBuilder CreateHostBuilder(string[] args) =>

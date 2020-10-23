@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using MiljoBrott.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace MiljoBrott
 {
@@ -28,6 +29,19 @@ namespace MiljoBrott
 			//services.AddTransient<IEnvironmentalRepository, FakeEnvironmentalRepository>();
 			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+			services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+
+			services.AddIdentity<IdentityUser, IdentityRole>()
+				.AddEntityFrameworkStores<AppIdentityDbContext>();
+
+			
+			services.ConfigureApplicationCookie(options =>
+			{
+				options.LoginPath = "/Home/Login";
+				options.AccessDeniedPath = "/Home/AccessDenied";
+			});
+			
+
 			services.AddTransient<IEnvironmentalRepository, EFEnvironmentalRepository>();
 			services.AddControllersWithViews();
 			services.AddSession();
@@ -44,6 +58,9 @@ namespace MiljoBrott
 			app.UseStatusCodePages();
 			app.UseStaticFiles();
 			app.UseRouting();
+
+			app.UseAuthentication();
+			app.UseAuthorization();
 
 			app.UseSession();
 

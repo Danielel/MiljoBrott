@@ -2,7 +2,8 @@
 	For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-	Layout = "_WorkerStartLayout";
+	//Layout = "_WorkerStartLayout";
+	Layout = "_WorkerNavigationLayout";
 }
 @model IEnvironmentalRepository
 
@@ -23,9 +24,9 @@
 				<select name="status">
 					<option selected="selected">Välj alla</option>
 					@*<option value="stat0">Inrapporterad</option>
-					<option value="stat1">Ingen åtgärd</option>
-					<option value="stat2">Påbörjad</option>
-					<option value="stat3">Klar</option>*@
+						<option value="stat1">Ingen åtgärd</option>
+						<option value="stat2">Påbörjad</option>
+						<option value="stat3">Klar</option>*@
 					@foreach (ErrandStatus es in Model.ErrandStatuses)
 					{
 						<option value="@es.StatusId">@es.StatusName</option>
@@ -37,10 +38,10 @@
 				<select name="department">
 					<option selected="selected">Välj alla</option>
 					@*<option value="teknik">Tekniska avloppshanteringen</option>
-					<option value="klimat">Klimat och energi</option>
-					<option value="miljo">Miljö och Hälsoskydd</option>
-					<option value="natur">Natur och Skogsvård</option>
-					<option value="avfall">Renhållning och Avfall</option>*@
+						<option value="klimat">Klimat och energi</option>
+						<option value="miljo">Miljö och Hälsoskydd</option>
+						<option value="natur">Natur och Skogsvård</option>
+						<option value="avfall">Renhållning och Avfall</option>*@
 					@foreach (Department dep in Model.Departments)
 					{
 						<option value="@dep.DepartmentId">@dep.DepartmentName</option>
@@ -52,3 +53,5 @@
 			<td><input class="button" type="submit" value="Sök" /></td>
 		</tr>
 	</table>
+
+	@await Component.InvokeAsync("StartViewErrandContent", ViewBag.employeeID)

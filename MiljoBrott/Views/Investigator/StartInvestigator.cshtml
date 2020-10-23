@@ -2,9 +2,11 @@
 	For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-	Layout = "_WorkerStartLayout";
+	//Layout = "_WorkerStartLayout";
+	Layout = "_WorkerNavigationLayout";
+	//@model IEnvironmentalRepository
 }
-@model IEnvironmentalRepository
+@model IEnumerable<ErrandStatus>
 
 <div id="content">
 	<h2>Ärenden</h2>
@@ -21,11 +23,7 @@
 			<td>
 				<select name="status">
 					<option selected="selected">Välj alla</option>
-					@*<option value="stat0">Inrapporterad</option>
-					<option value="stat1l">Ingen åtgärd</option>
-					<option value="stat2">Påbörjad</option>
-					<option value="stat3">Klar</option>*@
-					@foreach (ErrandStatus es in Model.ErrandStatuses)
+					@foreach (ErrandStatus es in Model)
 					{
 						<option value="@es.StatusId">@es.StatusName</option>
 
@@ -37,3 +35,5 @@
 			<td><input class="button" type="submit" value="Sök" /></td>
 		</tr>
 	</table>
+
+	@await Component.InvokeAsync("StartViewErrandContent", ViewBag.employeeID)

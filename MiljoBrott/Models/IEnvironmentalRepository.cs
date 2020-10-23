@@ -17,7 +17,13 @@ namespace MiljoBrott.Models
 
 		IQueryable<Employee> GetEmployeesOfRole(string roleTitle);
 
+		Task<IQueryable<Employee>> GetEmployeesOfDepartment(string departmentId);
+
+		Task<IQueryable<Employee>> GetEmployeesOfDepartmentAndRole(string departmentId, string role);
+
 		IQueryable<Department> GetDepartmentsExcluding(string departmentId);
+
+		Task<Employee> GetEmployee(string employeeId);
 
 		Task<Errand> GetErrand(int errandId);
 
@@ -34,6 +40,18 @@ namespace MiljoBrott.Models
 		int GetSequenceNumber();
 
 		IQueryable<ErrandStatus> GetInvestigatorErrandStatuses();
+
+		Task<IQueryable<StartViewErrand>> GetStartViewCoordinatorErrands();
+
+		Task<IQueryable<StartViewErrand>> GetStartViewManagerErrands(string departmentId);
+
+		Task<IQueryable<StartViewErrand>> GetStartViewInvestigatorErrands(string employeeId);
+
+		/**
+		 * Provides the correct list of StartViewErrands for the given employee
+		 * 
+		 */
+		Task<IQueryable<StartViewErrand>> GetStartViewEmployeeErrands(string employeeId);
 
 		//string GetErrandStatus(string id);
 

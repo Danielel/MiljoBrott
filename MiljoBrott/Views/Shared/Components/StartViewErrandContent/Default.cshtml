@@ -1,0 +1,28 @@
+﻿@{ 
+	string actionName = "Crime" + ViewBag.Worker;
+}
+
+@model IEnumerable<StartViewErrand> 
+
+
+<table>
+	<tr>
+		<th>Ärende anmält</th>
+		<th>Ärendenummer</th>
+		<th>Miljöbrott</th>
+		<th>Status</th>
+		<th>Avdelning</th>
+		<th>Handläggare</th>
+	</tr>
+	@foreach (StartViewErrand sve in @Model)
+	{
+		<tr>
+			<td>@sve.DateOfObservation.ToShortDateString()</td>
+			<td><a asp-controller="@ViewBag.Worker" asp-action="@actionName" asp-route-id="@sve.ErrandId">@sve.RefNumber</a></td>
+			<td>@sve.TypeOfCrime</td>
+			<td>@sve.StatusName</td>
+			<td>@sve.DepartmentName</td>
+			<td>@sve.EmployeeName</td>
+		</tr>
+	}
+</table>

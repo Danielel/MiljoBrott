@@ -2,21 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MiljoBrott.Infrastructure;
 using MiljoBrott.Models;
 
 namespace MiljoBrott.Controllers
 {
+	[Authorize]
 	public class CoordinatorController : Controller
 	{
 		private IEnvironmentalRepository repository;
-
-		public CoordinatorController(IEnvironmentalRepository repo)
+		private IHttpContextAccessor contextAcc;
+		public CoordinatorController(IEnvironmentalRepository repo, IHttpContextAccessor cont)
 		{
 			repository = repo;
+			contextAcc = cont;
 		}
 
+		private async Task<Employee> GetEmployeeData()
+		{
+			var userName = contextAcc.HttpContext.User.Identity.Name; //Gna be needed
+			Employee employee = await repository.GetEmployee(userName);
+			ViewBag.Worker = employee.RoleTitle;
+			return employee;
+		}
+
+		[Authorize(Roles = "Coordinator")]
 		public ViewResult CrimeCoordinator(int id)
 		{
 			ViewBag.Worker = "Coordinator";
@@ -25,6 +38,7 @@ namespace MiljoBrott.Controllers
 			return View();
 		}
 
+		[Authorize(Roles = "Coordinator")]
 		public IActionResult DepartmentChange(Department dep, int id)
 		{
 			int errandId = id;
@@ -40,6 +54,7 @@ namespace MiljoBrott.Controllers
 			return RedirectToAction("CrimeCoordinator",  new { id = errandId });
 		}
 
+		[Authorize(Roles = "Coordinator")]
 		public ViewResult ReportCrime()
 		{
 			ViewBag.Worker = "Coordinator";
@@ -50,12 +65,18 @@ namespace MiljoBrott.Controllers
 				return View(errand);
 		}
 
+		[Authorize(Roles = "Coordinator")]
 		public ViewResult StartCoordinator()
 		{
 			ViewBag.Worker = "Coordinator";
+
+			var username = contextAcc.HttpContext.User.Identity.Name;
+			Employee currentEmployee = repository.GetEmployee(username).Result; //Superflous
+			ViewBag.employeeID = username;
 			return View(repository);
 		}
 
+		[Authorize(Roles = "Coordinator")]
 		public ViewResult Validate(Errand errand)
 		{
 			ViewBag.Worker = "Coordinator";
@@ -63,6 +84,7 @@ namespace MiljoBrott.Controllers
 			return View(errand);
 		}
 
+		[Authorize(Roles = "Coordinator")]
 		public ViewResult Thanks()
 		{
 			ViewBag.Worker = "Coordinator";

@@ -2,24 +2,40 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MiljoBrott.Models;
 
 namespace MiljoBrott.Controllers
 {
+	[Authorize(Roles = "Manager")]
 	public class ManagerController : Controller
 	{
 		private IEnvironmentalRepository repository;
+		private IHttpContextAccessor contextAcc;
 
-		public ManagerController(IEnvironmentalRepository repo)
+		public ManagerController(IEnvironmentalRepository repo, IHttpContextAccessor cont)
 		{
 			repository = repo;
+
+			contextAcc = cont;
 		}
-		public ViewResult CrimeManager(int id)
+
+		private async Task<Employee> GetEmployeeData()
 		{
-			ViewBag.Worker = "Manager";
-			ViewBag.Employees = repository.GetEmployeesOfRole("investigator");
-			ViewBag.ID = id;
+			var userName = contextAcc.HttpContext.User.Identity.Name; //Gna be needed
+			Employee employee = await repository.GetEmployee(userName);
+			ViewBag.Worker = employee.RoleTitle;
+			return employee;
+		}
+
+		public async Task<ViewResult> CrimeManager(int id)
+		{
+			int errandId = id;
+			Employee managerEmployee = await GetEmployeeData();
+			ViewBag.Employees = await repository.GetEmployeesOfDepartmentAndRole(managerEmployee.DepartmentId, "Investigator");
+			ViewBag.ID = errandId;
 			return View();
 		}
 
@@ -48,9 +64,10 @@ namespace MiljoBrott.Controllers
 			return RedirectToAction("CrimeManager", new { id = errandFromDb.ErrandID });
 		}
 
-		public ViewResult StartManager()
+		public async Task<ViewResult> StartManager()
 		{
-			ViewBag.Worker = "Manager";
+			Employee managerEmployee = await GetEmployeeData();
+			ViewBag.employeeID = managerEmployee.EmployeeId;
 			return View(repository);
 		}
 	}
