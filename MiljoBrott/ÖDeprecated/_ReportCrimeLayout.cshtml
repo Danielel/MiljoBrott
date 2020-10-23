@@ -1,0 +1,52 @@
+﻿@{
+	Layout = "_WorkerNavigationLayout";
+	if (String.Equals(ViewBag.Worker, "Citizen"))
+	{
+		Layout = "_CitizenLayout";
+	}
+}
+@*@model Errand
+
+	@RenderBody()
+
+	<p>Fyll i formuläret nedan, alla rutor markerade med stjärna (*) måste fyllas i</p>
+	<form asp-controller="@ViewBag.Worker" asp-action="Validate" method="post">
+		<p>
+			<input type="hidden" name="isSubmitted" value="true" />
+		</p>
+		<p>
+			<span class="label">Var har brottet skett någonstans?</span><br />
+			<input asp-for="Place" /> *
+			<span asp-validation-for="Place"></span>
+		</p>
+		<p>
+			<span class="label">Vilken typ av brott?</span><br />
+			<input asp-for="TypeOfCrime" /> *
+			<span asp-validation-for="TypeOfCrime"></span>
+		</p>
+		<p>
+			<span class="label">När skedde brottet?</span><br />
+			<input asp-for="DateOfObservation" /> *
+			<span asp-validation-for="DateOfObservation"></span>
+		</p>
+		<p>
+			<span class="label">Ditt namn (för- och efternamn):</span><br />
+			<input asp-for="InformerName" /> *
+			<span asp-validation-for="InformerName"></span>
+		</p>
+		<p>
+			<span class="label">Din telefon:</span><br />
+			<input asp-for="InformerPhone" /> *
+			<span asp-validation-for="InformerPhone"></span>
+		</p>
+		<p>
+			<span class="label">Beskriv din observation<br /> (ex. namn på misstänkt person):</span><br />
+			<textarea asp-for="Observation" rows="5" cols="16"></textarea>
+		</p>
+		<p>
+			<input class="button" type="submit" value="Skicka in" />
+		</p>
+	</form>
+	@RenderSection("cleanup", false)
+
+*@

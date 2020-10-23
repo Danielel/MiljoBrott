@@ -27,6 +27,8 @@ namespace MiljoBrott.Models
 
 		Task<Errand> GetErrand(int errandId);
 
+		Task<CrimeContentViewErrand> GetCrimeContentErrandView(int errandId);
+
 		Picture AddNewPicture(int errandId, string fileName);
 
 		Sample AddNewSample(int errandId, string fileName);

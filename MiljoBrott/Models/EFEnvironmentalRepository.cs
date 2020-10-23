@@ -238,7 +238,7 @@ namespace MiljoBrott.Models
 							 into employeeErrand
 							 from empE in employeeErrand.DefaultIfEmpty()
 
-							 orderby err.RefNumber descending
+							 orderby err.RefNumber ascending
 
 							 select new StartViewErrand
 							 {
@@ -265,7 +265,7 @@ namespace MiljoBrott.Models
 							 into employeeErrand
 							 from empE in employeeErrand.DefaultIfEmpty()
 
-							 orderby err.RefNumber descending
+							 orderby err.RefNumber ascending
 
 							 select new StartViewErrand
 							 {
@@ -292,7 +292,7 @@ namespace MiljoBrott.Models
 							 into employeeErrand
 							 from empE in employeeErrand.DefaultIfEmpty()
 
-							 orderby err.RefNumber descending
+							 orderby err.RefNumber ascending
 
 							 select new StartViewErrand
 							 {
@@ -324,6 +324,42 @@ namespace MiljoBrott.Models
 			}
 			else
 				throw new Exception("employeeId has no role");
+		}
+
+
+		public async Task<CrimeContentViewErrand> GetCrimeContentErrandView(int errandId)
+		{
+			Errand viewErrand = await GetErrand(errandId);
+
+			var cimeViewErrand = from stat in ErrandStatuses where viewErrand.StatusId.Equals(stat.StatusId)
+								 join dep in Departments on viewErrand.DepartmentId equals dep.DepartmentId
+								 into departmentErrand
+								 from deptE in departmentErrand.DefaultIfEmpty()
+
+								 join ee in Employees on viewErrand.EmployeeId equals ee.EmployeeId
+								 into employeeErrand
+								 from empE in employeeErrand.DefaultIfEmpty()
+
+								 select new CrimeContentViewErrand
+								 {
+									DateOfObservation = viewErrand.DateOfObservation,
+									ErrandId = viewErrand.ErrandID,
+									RefNumber = viewErrand.RefNumber,
+									TypeOfCrime = viewErrand.TypeOfCrime,
+									StatusName = stat.StatusName,
+									DepartmentName = deptE.DepartmentName,
+									EmployeeName = empE.EmployeeName,
+									Place = viewErrand.Place,
+									Observation = viewErrand.Observation,
+									InvestigatorInfo = viewErrand.InvestigatorInfo,
+									InvestigatorAction = viewErrand.InvestigatorAction,
+									InformerName = viewErrand.InformerName,
+									InformerPhone = viewErrand.InformerPhone,
+									Samples = viewErrand.Samples,
+									Pictures = viewErrand.Pictures
+								 };
+
+			return cimeViewErrand.FirstOrDefault();
 		}
 
 

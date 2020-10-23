@@ -28,11 +28,13 @@ namespace MiljoBrott.Controllers
 		public ViewResult Index()
 		{
 			ViewBag.Worker = "Citizen";
-			var errand = HttpContext.Session.GetJson<Errand>("ErrandCreation");
+			/*var errand = HttpContext.Session.GetJson<Errand>("ErrandCreation");
 			if (errand == null)
 				return View();
 			else
-				return View(errand);			
+				return View(errand);
+			*/
+			return View();
 		}
 
 		public ViewResult Login(string returnUrl)

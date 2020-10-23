@@ -1,13 +1,16 @@
 ﻿@{
-	Layout = "_ReportCrimeLayout";
-	ViewBag.Worker = "Citizen";
+	//Layout = "_ReportCrimeLayout";
+	Layout = "_CitizenLayout";
 }
 <div id="content">
 	<section id="mainColumn">
 		<h2>Välkommen att fylla i din anmälan av miljöbrott</h2>
 		<p class="info">I Småstad är inga brott för små för att anmälas</p>
 
-	@section cleanup {
-		@*close opening of section id="mainColumn"*@
+
+		@await Component.InvokeAsync("ReportCrime")
+
+		@*@section cleanup {
+		</section><!-- End Left -->
+		}*@
 	</section><!-- End Left -->
-	}

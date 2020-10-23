@@ -21,7 +21,7 @@ namespace MiljoBrott.Controllers
 			contextAcc = cont;
 		}
 
-		private async Task<Employee> GetEmployeeData()
+		private async Task<Employee> GetEmployeeData() //should be inherited from a super of Controller but whatever
 		{
 			var userName = contextAcc.HttpContext.User.Identity.Name; //Gna be needed
 			Employee employee = await repository.GetEmployee(userName);
@@ -58,11 +58,13 @@ namespace MiljoBrott.Controllers
 		public ViewResult ReportCrime()
 		{
 			ViewBag.Worker = "Coordinator";
+			/*
 			var errand = HttpContext.Session.GetJson<Errand>("ErrandCreation");
 			if (errand == null)
 				return View();
 			else
-				return View(errand);
+				return View(errand);*/
+			return View();
 		}
 
 		[Authorize(Roles = "Coordinator")]

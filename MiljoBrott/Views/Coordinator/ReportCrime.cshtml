@@ -2,8 +2,10 @@
 	For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-	Layout = "_ReportCrimeLayout";
+	//Layout = "_ReportCrimeLayout";
+	Layout = "_WorkerNavigationLayout";
 }
 <div id="content">
 	<h2>Rapportera brott</h2>
 	<p class="info">Du är inloggad som samordnare</p>
+	@await Component.InvokeAsync("ReportCrime")

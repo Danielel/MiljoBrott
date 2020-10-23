@@ -1,4 +1,4 @@
-﻿@model Errand 
+﻿@model CrimeContentViewErrand 
 
 
 <h3>Ärende: @Model.RefNumber</h3>
@@ -40,15 +40,15 @@
 	<h3>Utredning</h3>
 	<p>
 		<span class="label">Status:</span><br />
-		@Model.StatusId
+		@Model.StatusName
 	</p>
 	<p>
 		<span class="label">Ansvarig avdelning: </span><br />
-		@Model.DepartmentId
+		@Model.DepartmentName
 	</p>
 	<p>
 		<span class="label">Handläggare: </span><br />
-		@Model.EmployeeId
+		@Model.EmployeeName
 	</p>
 	<p>
 		<span class="label">Provtagning: </span><br />

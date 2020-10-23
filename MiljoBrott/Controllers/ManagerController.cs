@@ -56,6 +56,7 @@ namespace MiljoBrott.Controllers
 			{
 				if (!errand.EmployeeId.Equals("Välj"))
 				{
+					errandFromDb.StatusId = "S_A"; //Perhaps get from method instead
 					errandFromDb.EmployeeId = errand.EmployeeId; //Change errand status?
 					repository.UpdateErrand(errandFromDb);
 				}
@@ -68,6 +69,7 @@ namespace MiljoBrott.Controllers
 		{
 			Employee managerEmployee = await GetEmployeeData();
 			ViewBag.employeeID = managerEmployee.EmployeeId;
+			ViewBag.departmentId = managerEmployee.DepartmentId;
 			return View(repository);
 		}
 	}
