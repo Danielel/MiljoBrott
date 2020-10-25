@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MiljoBrott.Models
 {
-	public class EFEnvironmentalRepository : IEnvironmentalRepository
+	public partial class EFEnvironmentalRepository : IEnvironmentalRepository
 	{
 
 		private ApplicationDbContext context;
@@ -120,7 +120,7 @@ namespace MiljoBrott.Models
 
 
 
-		public int GetSequenceNumber()
+		private int GetSequenceNumber()
 		{
 			Sequence sequence = context.Sequences.FirstOrDefault(sq => sq.Id == 1);
 			if (sequence == null)
@@ -139,10 +139,10 @@ namespace MiljoBrott.Models
 			return refNumber;
 		}
 
-		//Returns the ref-number of the errand
+
 		public string SaveErrand(Errand errand)
 		{
-			if(errand.ErrandID == 0)
+			if(errand.ErrandID == 0) //A new errand not yet added to the database
 			{
 				errand.RefNumber = CreateErrandRefNumber();
 				errand.StatusId = "S_A";
@@ -193,7 +193,7 @@ namespace MiljoBrott.Models
 		//Returns true if there was an errand of matching id that was updated.
 		public bool UpdateErrand(Errand errand)
 		{
-			if(errand.ErrandID != 0)
+			if(errand.ErrandID != 0) //cannot attempt to update an errand that isnt in the database
 			{
 				Errand dbErrand = context.Errands.FirstOrDefault(err => errand.ErrandID == err.ErrandID);
 				if(dbErrand != null)
@@ -224,144 +224,6 @@ namespace MiljoBrott.Models
 				   where !es.StatusId.Equals("S_A") && !es.StatusId.Equals("S_B")
 				   select es;
 		}
-
-
-		public async Task<IQueryable<StartViewErrand>> GetStartViewCoordinatorErrands()
-		{
-			var errandList = from err in Errands
-							 join stat in ErrandStatuses on err.StatusId equals stat.StatusId
-							 join dep in Departments on err.DepartmentId equals dep.DepartmentId
-							 into departmentErrand
-							 from deptE in departmentErrand.DefaultIfEmpty()
-
-							 join ee in Employees on err.EmployeeId equals ee.EmployeeId
-							 into employeeErrand
-							 from empE in employeeErrand.DefaultIfEmpty()
-
-							 orderby err.RefNumber ascending
-
-							 select new StartViewErrand
-							 {
-								 DateOfObservation = err.DateOfObservation,
-								 ErrandId = err.ErrandID,
-								 RefNumber = err.RefNumber,
-								 TypeOfCrime = err.TypeOfCrime,
-								 StatusName = stat.StatusName,
-								 DepartmentName = (err.DepartmentId == null ? "ej tillsatt" : deptE.DepartmentName),
-								 EmployeeName = (err.EmployeeId == null ? "ej tillsatt" : empE.EmployeeName)
-							 };
-			return errandList;
-		}
-
-		public async Task<IQueryable<StartViewErrand>> GetStartViewManagerErrands(string departmentId)
-		{
-			var errandList = from err in await GetErrandsOfDepartment(departmentId)
-							 join stat in ErrandStatuses on err.StatusId equals stat.StatusId
-							 join dep in Departments on err.DepartmentId equals dep.DepartmentId
-							 into departmentErrand
-							 from deptE in departmentErrand.DefaultIfEmpty()
-
-							 join ee in Employees on err.EmployeeId equals ee.EmployeeId
-							 into employeeErrand
-							 from empE in employeeErrand.DefaultIfEmpty()
-
-							 orderby err.RefNumber ascending
-
-							 select new StartViewErrand
-							 {
-								 DateOfObservation = err.DateOfObservation,
-								 ErrandId = err.ErrandID,
-								 RefNumber = err.RefNumber,
-								 TypeOfCrime = err.TypeOfCrime,
-								 StatusName = stat.StatusName,
-								 DepartmentName = (err.DepartmentId == null ? "ej tillsatt" : deptE.DepartmentName),
-								 EmployeeName = (err.EmployeeId == null ? "ej tillsatt" : empE.EmployeeName)
-							 };
-			return errandList;
-		}
-
-		public async Task<IQueryable<StartViewErrand>> GetStartViewInvestigatorErrands(string employeeId)
-		{
-			var errandList = from err in await GetErrandsOfEmployee(employeeId)
-							 join stat in ErrandStatuses on err.StatusId equals stat.StatusId
-							 join dep in Departments on err.DepartmentId equals dep.DepartmentId
-							 into departmentErrand
-							 from deptE in departmentErrand.DefaultIfEmpty()
-
-							 join ee in Employees on err.EmployeeId equals ee.EmployeeId
-							 into employeeErrand
-							 from empE in employeeErrand.DefaultIfEmpty()
-
-							 orderby err.RefNumber ascending
-
-							 select new StartViewErrand
-							 {
-								 DateOfObservation = err.DateOfObservation,
-								 ErrandId = err.ErrandID,
-								 RefNumber = err.RefNumber,
-								 TypeOfCrime = err.TypeOfCrime,
-								 StatusName = stat.StatusName,
-								 DepartmentName = (err.DepartmentId == null ? "ej tillsatt" : deptE.DepartmentName),
-								 EmployeeName = (err.EmployeeId == null ? "ej tillsatt" : empE.EmployeeName)
-							 };
-			return errandList;
-		}
-
-		public async Task<IQueryable<StartViewErrand>> GetStartViewEmployeeErrands(string employeeId)
-		{
-			Employee employee = await GetEmployee(employeeId);
-			if (employee.RoleTitle.Equals("Investigator"))
-			{
-				return await GetStartViewInvestigatorErrands(employeeId);
-			}
-			else if (employee.RoleTitle.Equals("Manager"))
-			{
-				return await GetStartViewManagerErrands(employee.DepartmentId);
-			}
-			else if (employee.RoleTitle.Equals("Coordinator"))
-			{
-				return await GetStartViewCoordinatorErrands();
-			}
-			else
-				throw new Exception("employeeId has no role");
-		}
-
-
-		public async Task<CrimeContentViewErrand> GetCrimeContentErrandView(int errandId)
-		{
-			Errand viewErrand = await GetErrand(errandId);
-
-			var cimeViewErrand = from stat in ErrandStatuses where viewErrand.StatusId.Equals(stat.StatusId)
-								 join dep in Departments on viewErrand.DepartmentId equals dep.DepartmentId
-								 into departmentErrand
-								 from deptE in departmentErrand.DefaultIfEmpty()
-
-								 join ee in Employees on viewErrand.EmployeeId equals ee.EmployeeId
-								 into employeeErrand
-								 from empE in employeeErrand.DefaultIfEmpty()
-
-								 select new CrimeContentViewErrand
-								 {
-									DateOfObservation = viewErrand.DateOfObservation,
-									ErrandId = viewErrand.ErrandID,
-									RefNumber = viewErrand.RefNumber,
-									TypeOfCrime = viewErrand.TypeOfCrime,
-									StatusName = stat.StatusName,
-									DepartmentName = deptE.DepartmentName,
-									EmployeeName = empE.EmployeeName,
-									Place = viewErrand.Place,
-									Observation = viewErrand.Observation,
-									InvestigatorInfo = viewErrand.InvestigatorInfo,
-									InvestigatorAction = viewErrand.InvestigatorAction,
-									InformerName = viewErrand.InformerName,
-									InformerPhone = viewErrand.InformerPhone,
-									Samples = viewErrand.Samples,
-									Pictures = viewErrand.Pictures
-								 };
-
-			return cimeViewErrand.FirstOrDefault();
-		}
-
 
 	}
 }

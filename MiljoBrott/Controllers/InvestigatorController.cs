@@ -29,9 +29,9 @@ namespace MiljoBrott.Controllers
 			environment = envi;
 		}
 
-		private async Task<Employee> GetEmployeeData()
+		private async Task<Employee> GetEmployeeData() //Could be inherited from a super version of Controller but whatever
 		{
-			var userName = contextAcc.HttpContext.User.Identity.Name; //Gna be needed
+			var userName = contextAcc.HttpContext.User.Identity.Name; 
 			Employee employee = await repository.GetEmployee(userName);
 			ViewBag.Worker = employee.RoleTitle;
 			return employee;
@@ -39,7 +39,6 @@ namespace MiljoBrott.Controllers
 
 		public ViewResult CrimeInvestigator(int id)
 		{
-			var userName = contextAcc.HttpContext.User.Identity.Name; //Gna be needed
 			ViewBag.Worker = "Investigator";
 			ViewBag.Statuses = repository.GetInvestigatorErrandStatuses();
 			ViewBag.ID = id;
@@ -61,6 +60,11 @@ namespace MiljoBrott.Controllers
 			return fileName;
 		}
 
+		/// <summary>
+		/// Checks if a model errand from the CrimeInvestigator view has any relevant data within and returns bools accordingly
+		/// </summary>
+		/// <param name="errand"></param>
+		/// <returns></returns>
 		private (bool info, bool action, bool status) ErrandSaveDataExists(Errand errand)
 		{
 			return (!(errand.InvestigatorInfo is null), 
@@ -68,6 +72,30 @@ namespace MiljoBrott.Controllers
 				!(errand.StatusId.Equals("Välj")));
 		}
 
+		/// <summary>
+		/// Appends InvestigatorInfo/InvestigatorAction text to the the already existing InvestigatorInfo/InvestigatorAction
+		/// </summary>
+		/// <param name="errandString"></param>
+		/// <param name="dbErrandString"></param>
+		/// <returns>new InvestigatorInfo/InvestigatorAction strings for storage in database</returns>
+		private static string GetUpdatedInvestigatorData(string errandString, string dbErrandString)
+		{
+			if (dbErrandString is null)
+				dbErrandString = dbErrandString + errandString;
+			else
+				dbErrandString = dbErrandString + " " + errandString;
+			return dbErrandString;
+		}
+
+
+		/// <summary>
+		/// If an investigator has submitted any data it should be updated in the database and potential files should be saved.
+		/// </summary>
+		/// <param name="loadSample"></param>
+		/// <param name="loadImage"></param>
+		/// <param name="errand"></param>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		public async Task<IActionResult> InvestigatorDataUpload(IFormFile loadSample, IFormFile loadImage, Errand errand, int id)
 		{
 			int	errandId = id;
@@ -93,26 +121,18 @@ namespace MiljoBrott.Controllers
 				repository.AddNewPicture(errandId, imageFileName);
 			}
 			if(infoExists)
-			{
-				if(dbErrand.InvestigatorInfo is null)
-					dbErrand.InvestigatorInfo = dbErrand.InvestigatorInfo + errand.InvestigatorInfo;
-				else
-					dbErrand.InvestigatorInfo =  dbErrand.InvestigatorInfo + " " + errand.InvestigatorInfo;
-			}
-			if(actionExists)
-			{
-				if (dbErrand.InvestigatorAction is null)
-					dbErrand.InvestigatorAction = dbErrand.InvestigatorAction + errand.InvestigatorAction;
-				else
-					dbErrand.InvestigatorAction = dbErrand.InvestigatorAction + " " + errand.InvestigatorAction;
-			}
+				dbErrand.InvestigatorInfo = GetUpdatedInvestigatorData(errand.InvestigatorInfo, dbErrand.InvestigatorInfo);
+			if (actionExists)
+				dbErrand.InvestigatorAction = GetUpdatedInvestigatorData(errand.InvestigatorAction, dbErrand.InvestigatorAction);
 			if(statusExists)
 				dbErrand.StatusId = errand.StatusId;
 
 			repository.UpdateErrand(dbErrand);
 			return RedirectToAction("CrimeInvestigator", new { id = errandId });
 		}
+
 		
+
 		public async Task<ViewResult> StartInvestigator()
 		{
 			Employee currentEmployee = await GetEmployeeData();

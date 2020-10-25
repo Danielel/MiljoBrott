@@ -1,4 +1,4 @@
-﻿@model CrimeContentViewErrand 
+﻿@model CrimeContentErrandView
 
 
 <h3>Ärende: @Model.RefNumber</h3>
@@ -66,30 +66,30 @@
 				@s
 			}
 		}
-		</p>
-		<p>
-			<span class="label">Ytterligare information: </span><br />
-			@Model.InvestigatorInfo
-		</p>
-		<p>
-			<span class="label">Händelser: </span><br />
-			@Model.InvestigatorAction
-		</p>
-		<p>
-			<span class="label">Bilder: </span><br />
-			@{
-				if (Model.Pictures.Count >= 1)
+	</p>
+	<p>
+		<span class="label">Ytterligare information: </span><br />
+		@Model.InvestigatorInfo
+	</p>
+	<p>
+		<span class="label">Händelser: </span><br />
+		@Model.InvestigatorAction
+	</p>
+	<p>
+		<span class="label">Bilder: </span><br />
+		@{
+			if (Model.Pictures.Count >= 1)
+			{
+				foreach (Picture pic in Model.Pictures)
 				{
-					foreach (Picture pic in Model.Pictures)
-					{
-						<a href="~/inv_images/@pic.PictureName">@pic.PictureName</a>
-					}
-				}
-				else
-				{
-					string s = "Finns inga bilder.";
-					@s
+					<a href="~/inv_images/@pic.PictureName">@pic.PictureName</a>
 				}
 			}
+			else
+			{
+				string s = "Finns inga bilder.";
+				@s
+			}
+		}
 	</p>
 </section>

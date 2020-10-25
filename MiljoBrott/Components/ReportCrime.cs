@@ -25,8 +25,6 @@ namespace MiljoBrott.Components
 				return View();
 			else
 				return View(errand);
-
-			//return View(await repository.GetErrand(id));
 		}
 	}
 }

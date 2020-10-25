@@ -19,9 +19,8 @@ namespace MiljoBrott.Components
 
 		public async Task<IViewComponentResult> InvokeAsync(int id)
 		{
-			CrimeContentViewErrand ccve = await repository.GetCrimeContentErrandView(id);
-			return View(ccve);
-			return View(await repository.GetErrand(id));
+			CrimeContentErrandView crimeContentErrandView = await repository.GetCrimeContentErrandView(id);
+			return View(crimeContentErrandView);
 		}
 	}
 }

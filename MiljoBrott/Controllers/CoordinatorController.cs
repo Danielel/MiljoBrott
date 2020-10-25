@@ -10,7 +10,7 @@ using MiljoBrott.Models;
 
 namespace MiljoBrott.Controllers
 {
-	[Authorize]
+	[Authorize(Roles = "Coordinator")]
 	public class CoordinatorController : Controller
 	{
 		private IEnvironmentalRepository repository;
@@ -21,28 +21,26 @@ namespace MiljoBrott.Controllers
 			contextAcc = cont;
 		}
 
-		private async Task<Employee> GetEmployeeData() //should be inherited from a super of Controller but whatever
+		private async Task<Employee> GetEmployeeData() //Could be inherited from a super version of Controller but whatever
 		{
-			var userName = contextAcc.HttpContext.User.Identity.Name; //Gna be needed
+			var userName = contextAcc.HttpContext.User.Identity.Name;
 			Employee employee = await repository.GetEmployee(userName);
 			ViewBag.Worker = employee.RoleTitle;
 			return employee;
 		}
 
-		[Authorize(Roles = "Coordinator")]
 		public ViewResult CrimeCoordinator(int id)
 		{
 			ViewBag.Worker = "Coordinator";
 			ViewBag.ID = id;
-			ViewBag.Departments = repository.GetDepartmentsExcluding("D00"); //ugly
+			ViewBag.Departments = repository.GetDepartmentsExcluding("D00"); //Coordinators should not be able to assign errands to the "Småstad Kommun" department.
 			return View();
 		}
 
-		[Authorize(Roles = "Coordinator")]
 		public IActionResult DepartmentChange(Department dep, int id)
 		{
 			int errandId = id;
-			if (!(dep.DepartmentId.Equals("Välj")))
+			if (!(dep.DepartmentId.Equals("Välj"))) //if department == "Välj, no department was chosen in the dropdown list 
 			{
 				Task<Errand> taskOfErrand = repository.GetErrand(errandId);
 				Errand errand = taskOfErrand.Result;
@@ -54,31 +52,21 @@ namespace MiljoBrott.Controllers
 			return RedirectToAction("CrimeCoordinator",  new { id = errandId });
 		}
 
-		[Authorize(Roles = "Coordinator")]
 		public ViewResult ReportCrime()
 		{
 			ViewBag.Worker = "Coordinator";
-			/*
-			var errand = HttpContext.Session.GetJson<Errand>("ErrandCreation");
-			if (errand == null)
-				return View();
-			else
-				return View(errand);*/
 			return View();
 		}
 
-		[Authorize(Roles = "Coordinator")]
 		public ViewResult StartCoordinator()
 		{
 			ViewBag.Worker = "Coordinator";
 
 			var username = contextAcc.HttpContext.User.Identity.Name;
-			Employee currentEmployee = repository.GetEmployee(username).Result; //Superflous
-			ViewBag.employeeID = username;
+			ViewBag.employeeID = username; //username = employeeId
 			return View(repository);
 		}
 
-		[Authorize(Roles = "Coordinator")]
 		public ViewResult Validate(Errand errand)
 		{
 			ViewBag.Worker = "Coordinator";
@@ -86,7 +74,6 @@ namespace MiljoBrott.Controllers
 			return View(errand);
 		}
 
-		[Authorize(Roles = "Coordinator")]
 		public ViewResult Thanks()
 		{
 			ViewBag.Worker = "Coordinator";

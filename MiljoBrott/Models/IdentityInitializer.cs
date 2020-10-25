@@ -120,6 +120,7 @@ namespace MiljoBrott.Models
 			await uManager.AddToRoleAsync(E502, "Investigator");
 			await uManager.AddToRoleAsync(E503, "Investigator");
 
+			/*
 			IdentityUser testUser = new IdentityUser("Test" + coordinatorString);
 			await userM.CreateAsync(testUser, testPw);
 			await userM.AddToRoleAsync(testUser, coordinatorString);
@@ -132,6 +133,7 @@ namespace MiljoBrott.Models
 			IdentityUser testUser4 = new IdentityUser("Test" + siteAdminString);
 			await userM.CreateAsync(testUser4, testPw);
 			await userM.AddToRoleAsync(testUser4, siteAdminString);
+			*/
 		}
 	}
 }

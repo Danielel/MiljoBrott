@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MiljoBrott.Models
 {
-	public class CrimeContentViewErrand
+	public class CrimeContentErrandView
 	{
 		public DateTime DateOfObservation { get; set; }
 		public int ErrandId { get; set; }

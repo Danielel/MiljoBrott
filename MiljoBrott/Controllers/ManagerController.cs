@@ -22,9 +22,9 @@ namespace MiljoBrott.Controllers
 			contextAcc = cont;
 		}
 
-		private async Task<Employee> GetEmployeeData()
+		private async Task<Employee> GetEmployeeData() //Could be inherited from a super version of Controller but whatever
 		{
-			var userName = contextAcc.HttpContext.User.Identity.Name; //Gna be needed
+			var userName = contextAcc.HttpContext.User.Identity.Name;
 			Employee employee = await repository.GetEmployee(userName);
 			ViewBag.Worker = employee.RoleTitle;
 			return employee;
@@ -57,7 +57,7 @@ namespace MiljoBrott.Controllers
 				if (!errand.EmployeeId.Equals("Välj"))
 				{
 					errandFromDb.StatusId = "S_A"; //Perhaps get from method instead
-					errandFromDb.EmployeeId = errand.EmployeeId; //Change errand status?
+					errandFromDb.EmployeeId = errand.EmployeeId;
 					repository.UpdateErrand(errandFromDb);
 				}
 			}
