@@ -1,0 +1,59 @@
+﻿@{
+	Layout = "_SiteAdminLayout";
+}
+
+@model CompleteEmployeeView
+
+<div id="content">
+	<h2>Detaljer för användaren</h2>
+	<p class="info">Du är inloggad som administratör</p>
+	<h2>Användare: @Model.EmployeeId</h2>
+
+	<section id="leftColumn">
+		<h3>Ändra användare</h3>
+		<form asp-controller="SiteAdmin" asp-action="UpdateUser" asp-route-id="@ViewBag.EmployeeID" method="post">
+
+			@*<span class="label">Vilken typ av brott?</span><br />*@
+			<p>
+				<span class="label">Namn: </span><br />
+				<input asp-for="EmployeeName" />@*value="Nytt Namn"*@
+			</p>
+			<p>
+				<span class="label">Roll:</span><br />
+				<select asp-for="RoleTitle" asp-items="@(new SelectList(ViewBag.Roles))">
+				</select>
+			</p>
+			<p>
+				<span class="label">Avdelning:</span><br />
+				<select asp-for="DepartmentId" asp-items="@(new SelectList(ViewBag.Departments, "DepartmentId", "DepartmentName"))">
+				</select>
+			</p>
+
+			@*Maybe add pasword support*@
+
+			<p><input class="button" type="submit" value="Spara" /></p>
+		</form>
+
+	</section>
+
+	<section id="rightColumn">
+		<h3>Användardata</h3>
+		<p>
+			<span class="label">Namn: </span><br />
+			@Model.EmployeeName
+		</p>
+		<p>
+			<span class="label">Roll:</span><br />
+			@Model.RoleTitle
+		</p>
+		<p>
+			<span class="label">Avdelning:</span><br />
+			@Model.DepartmentName
+		</p>
+	</section>
+
+	<section id="bottomColumn">
+		<form asp-controller="SiteAdmin" asp-action="Validate" asp-route-id="@ViewBag.EmployeeID" method="post">
+			<p><input class="button" type="submit" value="Radera Användare" /></p>
+		</form>
+	</section>

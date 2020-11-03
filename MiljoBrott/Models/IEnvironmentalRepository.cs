@@ -51,6 +51,13 @@ namespace MiljoBrott.Models
 		/// <returns></returns>
 		IQueryable<Department> GetDepartmentsExcluding(string departmentId);
 
+		/// <summary>
+		/// Provides the name of the department
+		/// </summary>
+		/// <param name="departmentId"></param>
+		/// <returns></returns>
+		string GetDepartmentName(string departmentId);
+
 
 
 		/// <summary>
@@ -101,6 +108,29 @@ namespace MiljoBrott.Models
 		/// <param name="errand"></param>
 		/// <returns>true if an errand of the same id was in the database</returns>
 		bool UpdateErrand(Errand errand);
+		
+		/// <summary>
+		/// Updates and saves to the database an existing employee with the employee data from the parameter.
+		/// </summary>
+		/// <param name="employee"></param>
+		/// <returns>true if employee found in database</returns>
+		bool UpdateEmployee(Employee employee);
+
+		/// <summary>
+		/// Create an employe with employeeId
+		/// If an employee already exists with that id, returns false
+		/// otherwhise true
+		/// </summary>
+		/// <param name="employeeId"></param>
+		/// <returns></returns>
+		Task<bool> AddEmployee(string employeeId);
+
+		/// <summary>
+		/// Deletes the employee of matching employeeId
+		/// </summary>
+		/// <param name="employee"></param>
+		/// <returns>returns true if an employee of the employeeId existed otherwise false</returns>
+		bool DeleteEmployee(string employeeId);
 
 		/// <summary>
 		/// Provides the ErrandStatus objects that an Investigator can assign
@@ -127,6 +157,36 @@ namespace MiljoBrott.Models
 		Task<IQueryable<StartViewErrand>> GetStartViewInvestigatorErrands(string employeeId);
 
 		/// <summary>
+		/// Provides all errands of status statusId and department departmentId, if any of the statusId or departmentId equal null then
+		/// errands of all statuses/departments are provided
+		/// </summary>
+		/// <param name="statusId"></param>
+		/// <param name="departmentId"></param>
+		/// <returns></returns>
+		Task<IQueryable<StartViewErrand>> GetStartViewCoordinatorErrandsFiltered(string statusId, string departmentId);
+
+		/// <summary>
+		/// Provides the correct list of StartViewErrands assigned to some specific department
+		/// where statusId matches the errand status and investigatorId matches the assigned investigator
+		/// if any of statusId or investigatorId equals null then errands of all statuses/departments are provided
+		/// </summary>
+		/// <param name="departmentId"></param>
+		/// <param name="statusId"></param>
+		/// <param name="investigatorId"></param>
+		/// <returns></returns>
+		Task<IQueryable<StartViewErrand>> GetStartViewManagerErrandsFiltered(string departmentId, string statusId, string investigatorId);
+
+		/// <summary>
+		/// Provides the correct list of StartViewErrands assigned to some specific employee
+		/// where statusId matches the errand status. If statusId equals null then all errands of all statuses are provided.
+		/// </summary>
+		/// <param name="employeeId"></param>
+		/// <param name="statusId"></param>
+		/// <returns></returns>
+		Task<IQueryable<StartViewErrand>> GetStartViewInvestigatorErrandsFiltered(string employeeId, string statusId);
+
+
+		/// <summary>
 		/// Provides the correct list of StartViewErrands for the given employee and its role,
 		/// Coordinators will receive all errands. managers will receive all errands assigned to the department of the manager
 		/// Investigators will receive all errands that have been assigned to him/her.
@@ -136,11 +196,48 @@ namespace MiljoBrott.Models
 		Task<IQueryable<StartViewErrand>> GetStartViewEmployeeErrands(string employeeId);
 
 		/// <summary>
+		/// Provides the correct list of StartViewErrands for the given employee and its role,
+		/// where the errand refNumber contains the caseNumber string 
+		/// </summary>
+		/// <param name="employeeId"></param>
+		/// <param name="caseNumber"></param>
+		/// <returns>Errands in the form of StartViewErrands</returns>
+		Task<IQueryable<StartViewErrand>> GetStartViewEmployeeErrandsCaseNumberSearched(string employeeId, string caseNumber);
+
+		/// <summary>
 		/// Returns the CrimeContentErrandView version of an Errand object for proper model binding.
 		/// </summary>
 		/// <param name="errandId"></param>
 		/// <returns></returns>
 		Task<CrimeContentErrandView> GetCrimeContentErrandView(int errandId);
+
+		/// <summary>
+		/// Provides the CompleteEmployeeView version of an employee
+		/// </summary>
+		/// <returns></returns>
+		Task<CompleteEmployeeView> GetCompleteViewOfEmployee(string employeeId);
+
+		/// <summary>
+		/// Provides a list of all employees including their linked deparmentNames in the form of CompleteEmployeeViews
+		/// </summary>
+		/// <returns></returns>
+		Task<IQueryable<CompleteEmployeeView>> GetStartViewEmployees();
+
+		/// <summary>
+		/// Provides all employees of RoleTitle role and department departmentId, if any of the role or departmentId parameters equal null then
+		/// employees of all roles/departments are provided 
+		/// </summary>
+		/// <param name="role"></param>
+		/// <param name="departmentId"></param>
+		/// <returns></returns>
+		Task<IQueryable<CompleteEmployeeView>> GetStartViewEmployeesFiltered(string role, string departmentId);
+
+		/// <summary>
+		/// Provides all employees which have the casenumber string in either the EmployeeId or EmployeeName
+		/// </summary>
+		/// <param name="caseNumber"></param>
+		/// <returns></returns>
+		Task<IQueryable<CompleteEmployeeView>> GetStartViewEmployeeNameSearched(string caseNumber);
 
 	}
 }

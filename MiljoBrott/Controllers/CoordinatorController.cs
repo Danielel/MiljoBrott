@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MiljoBrott.Infrastructure;
 using MiljoBrott.Models;
+using static MiljoBrott.Components.StartViewErrandContent;
 
 namespace MiljoBrott.Controllers
 {
@@ -63,7 +64,36 @@ namespace MiljoBrott.Controllers
 			ViewBag.Worker = "Coordinator";
 
 			var username = contextAcc.HttpContext.User.Identity.Name;
-			ViewBag.employeeID = username; //username = employeeId
+
+			StartViewErrandInputData startViewErrandInputData = new StartViewErrandInputData
+			{
+				employeeId = username
+			};
+			ViewBag.startViewErrandInputData = startViewErrandInputData;
+
+
+			return View(repository);
+		}
+
+		[HttpPost]
+		public ViewResult StartCoordinator(string statusId, string departmentId, string casenumber, bool isCasenumber)
+		{
+			ViewBag.Worker = "Coordinator";
+
+			var username = contextAcc.HttpContext.User.Identity.Name;
+
+			StartViewErrandInputData startViewErrandInputData = new StartViewErrandInputData
+			{
+				filterUsed = !isCasenumber,
+				caseNumberSearched = isCasenumber,
+				employeeId = username,
+				departmentId = !isCasenumber ? departmentId : null,
+				caseNumber = isCasenumber ? casenumber : null,
+				statusId = !isCasenumber ? statusId : null
+			};
+			ViewBag.startViewErrandInputData = startViewErrandInputData;
+
+
 			return View(repository);
 		}
 

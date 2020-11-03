@@ -1,0 +1,78 @@
+﻿@{
+	
+	Layout = "_SiteAdminLayout";
+}
+@model IQueryable<CompleteEmployeeView>
+
+<div id="content">
+	<h2>Anställda</h2>
+	<p class="info">Du är inloggad som administratör</p>
+
+	<table id="employeeForm">
+		<tr>
+			<td class="label">Välj avdelning:</td>
+			<td class="label">Välj roll:</td>
+			<td>&nbsp;</td>
+			<td class="label">Användarnamn eller namn:</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<form asp-controller="SiteAdmin" asp-action="StartSiteAdmin" method="post" enctype="multipart/form-data" multiple>
+				<td>
+					<select name="departmentId">
+						<option selected="selected">Välj alla</option>
+						@foreach (Department dep in ViewBag.Departments)
+						{
+							<option value="@dep.DepartmentId">@dep.DepartmentName</option>
+						}
+					</select>
+				</td>
+				<td>
+					<select name="role">
+						<option selected="selected">Välj alla</option>
+						@foreach (string role in ViewBag.Roles)
+						{
+							<option value="@role">@role</option>
+						}
+					</select>
+				</td>
+				<input type="hidden" name="isCasenumber" value="false" />
+				<td><input class="button" type="submit" value="Hämta lista" /></td>
+			</form>
+			<form asp-controller="SiteAdmin" asp-action="StartSiteAdmin" method="post" enctype="multipart/form-data" multiple>
+				<td><input name="casenumber" /></td>
+				<input type="hidden" name="isCasenumber" value="true" />
+				<td><input class="button" type="submit" value="Sök" /></td>
+			</form>
+		</tr>
+	</table>
+
+	<table>
+		@{
+			if (Model.Count() == 0 && ViewBag.FilteredOrSearched)
+			{
+				<tr>
+					<td>Inga anställda finns enligt filtreringen/sökningen.</td>
+				</tr>
+			}
+			else
+			{
+				<tr>
+					<th>Användarnamn</th>
+					<th>Namn</th>
+					<th>Roll</th>
+					<th>Avdelning</th>
+				</tr>
+				@foreach (CompleteEmployeeView emp in @Model)
+				{
+					<tr>
+						<td><a asp-controller="SiteAdmin" asp-action="EmployeeModification" asp-route-id="@emp.EmployeeId">@emp.EmployeeId</a></td>
+						<td>@emp.EmployeeName</td>
+						<td>@emp.RoleTitle</td>
+						<td>@emp.DepartmentName</td>
+					</tr>
+				}
+			}
+		}
+	</table>
+

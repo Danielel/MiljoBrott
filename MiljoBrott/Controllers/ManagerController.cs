@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MiljoBrott.Models;
+using static MiljoBrott.Components.StartViewErrandContent;
 
 namespace MiljoBrott.Controllers
 {
@@ -68,8 +69,37 @@ namespace MiljoBrott.Controllers
 		public async Task<ViewResult> StartManager()
 		{
 			Employee managerEmployee = await GetEmployeeData();
-			ViewBag.employeeID = managerEmployee.EmployeeId;
 			ViewBag.departmentId = managerEmployee.DepartmentId;
+
+			StartViewErrandInputData startViewErrandInputData = new StartViewErrandInputData
+			{
+				employeeId = managerEmployee.EmployeeId
+			};
+			ViewBag.startViewErrandInputData = startViewErrandInputData;
+
+
+			return View(repository);
+		}
+		
+		[HttpPost]
+		public async Task<ViewResult> StartManager(string statusId, string investigatorId, string casenumber, bool isCasenumber)
+		{
+			Employee managerEmployee = await GetEmployeeData();
+			ViewBag.departmentId = managerEmployee.DepartmentId;
+
+			StartViewErrandInputData startViewErrandInputData = new StartViewErrandInputData
+			{
+				filterUsed = !isCasenumber,
+				caseNumberSearched = isCasenumber,
+				employeeId = managerEmployee.EmployeeId,
+				caseNumber = isCasenumber ? casenumber : null,
+				statusId = !isCasenumber ? statusId : null,
+				investigatorId = !isCasenumber ? investigatorId : null
+				 
+			};
+			ViewBag.startViewErrandInputData = startViewErrandInputData;
+
+
 			return View(repository);
 		}
 	}

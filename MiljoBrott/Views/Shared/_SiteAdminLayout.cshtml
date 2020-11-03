@@ -1,0 +1,12 @@
+﻿@{
+	Layout = "_BaseLayout";
+}
+<nav>
+	<ul>
+		<li><a class="reports" asp-controller="SiteAdmin" asp-action="StartSiteAdmin">Start(Anställda)</a></li>
+		<li><a class="reports" asp-controller="SiteAdmin" asp-action="CreateUser">Lägg till Användare</a></li>
+
+		<li class="right"><a class="logout" asp-controller="Home" asp-action="Logout">Logga ut</a></li>
+	</ul>
+</nav><!-- End Nav -->
+@RenderBody()

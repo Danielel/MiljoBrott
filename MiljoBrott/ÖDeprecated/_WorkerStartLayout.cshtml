@@ -1,0 +1,31 @@
+﻿@{
+	Layout = "_WorkerNavigationLayout";
+	string actionName = "Crime" + ViewBag.Worker;
+}
+@*@model IEnumerable<Errand>
+	@model IEnvironmentalRepository
+
+	@RenderBody()
+	<!--Nedan ser man en lista på ärenden-->
+
+	<table>
+		<tr>
+			<th>Ärende anmält</th>
+			<th>Ärendenummer</th>
+			<th>Miljöbrott</th>
+			<th>Status</th>
+			<th>Avdelning</th>
+			<th>Handläggare</th>
+		</tr>
+		@foreach (Errand errand in Model.Errands)
+		{
+			<tr>
+				<td>@errand.DateOfObservation.ToShortDateString()</td>
+				<td><a asp-controller="@ViewBag.Worker" asp-action="@actionName" asp-route-id="@errand.ErrandID">@errand.RefNumber</a></td>
+				<td>@errand.TypeOfCrime</td>
+				<td>@errand.StatusId</td>
+				<td>@errand.DepartmentId</td>
+				<td>@errand.EmployeeId</td>
+			</tr>
+		}
+	</table>*@

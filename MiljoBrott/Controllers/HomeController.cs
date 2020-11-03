@@ -67,7 +67,8 @@ namespace MiljoBrott.Controllers
 						}
 						if (await userManager.IsInRoleAsync(user, "SiteAdmin"))
 						{
-							//Unimplemented
+							return Redirect("/SiteAdmin/StartSiteAdmin"); //För admin		  
+							//Unimplemented				 
 							//return Redirect("/SiteAdmin/StartSiteAdmin");
 						}
 					}

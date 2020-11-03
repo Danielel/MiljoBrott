@@ -42,6 +42,17 @@ namespace MiljoBrott.Models
 			return employees;
 		}
 
+		public string GetDepartmentName(string departmentId)
+		{
+			var department = from dep in Departments
+				   where dep.DepartmentId.Equals(departmentId)
+				   select dep;
+			if (department.FirstOrDefault() != null)
+				return department.FirstOrDefault().DepartmentName;
+			else
+				return null;
+		}
+
 		public IQueryable<Department> GetDepartmentsExcluding(string departmentId)
 		{
 			return from dep in Departments
@@ -50,9 +61,9 @@ namespace MiljoBrott.Models
 		}
 
 
-		public Task<Errand> GetErrand(int errandId)
+		public async Task<Errand> GetErrand(int errandId)
 		{
-			return Task.Run(() =>
+			return await Task.Run(() =>
 			{
 				var errand = from err in Errands
 							 where err.ErrandID == errandId
@@ -62,21 +73,21 @@ namespace MiljoBrott.Models
 			});
 		}
 
-		public Task<Employee> GetEmployee(string employeeId)
+		public async Task<Employee> GetEmployee(string employeeId)
 		{
-			return Task.Run(() =>
+			return await Task.Run(() =>
 			{
-				var errand = from ee in Employees
-							 where ee.EmployeeId == employeeId
+				var employee = from ee in Employees
+							 where ee.EmployeeId.Equals(employeeId)
 							 select ee;
-				var result = errand.FirstOrDefault();
+				var result = employee.FirstOrDefault();
 				return result;
 			});
 		}
 
-		public Task<IQueryable<Errand>> GetErrandsOfEmployee(string employeeId)
+		public async Task<IQueryable<Errand>> GetErrandsOfEmployee(string employeeId)
 		{
-			return Task.Run(() =>
+			return await Task.Run(() =>
 			{
 				var errands = from err in Errands
 							  where err.EmployeeId.Equals(employeeId)
@@ -85,9 +96,9 @@ namespace MiljoBrott.Models
 			});
 		}
 
-		public Task<IQueryable<Errand>> GetErrandsOfDepartment(string departmentId)
+		public async Task<IQueryable<Errand>> GetErrandsOfDepartment(string departmentId)
 		{
-			return Task.Run(() =>
+			return await Task.Run(() =>
 			{
 				var errands = from err in Errands
 							 where err.DepartmentId.Equals(departmentId)
@@ -96,9 +107,9 @@ namespace MiljoBrott.Models
 			});
 		}
 
-		public Task<IQueryable<Employee>> GetEmployeesOfDepartment(string departmentId)
+		public async Task<IQueryable<Employee>> GetEmployeesOfDepartment(string departmentId)
 		{
-			return Task.Run(() =>
+			return await Task.Run(() =>
 			{
 				var employees = from ee in Employees
 								where ee.DepartmentId.Equals(departmentId)
@@ -107,9 +118,9 @@ namespace MiljoBrott.Models
 			});
 		}
 
-		public Task<IQueryable<Employee>> GetEmployeesOfDepartmentAndRole(string departmentId, string role)
+		public async Task<IQueryable<Employee>> GetEmployeesOfDepartmentAndRole(string departmentId, string role)
 		{
-			return Task.Run(() =>
+			return await Task.Run(() =>
 			{
 				var employees = from ee in GetEmployeesOfRole(role)
 								where ee.DepartmentId.Equals(departmentId)
@@ -216,6 +227,81 @@ namespace MiljoBrott.Models
 			}
 			else
 				return false;
+		}
+		
+		private void RemoveEmployeeIdFromErrands(string employeeId)
+		{
+			IQueryable<Errand> errandsToModify = from err in context.Errands //Remove employee from all errands
+												 where err.EmployeeId.Equals(employeeId)
+												 select err;
+
+			foreach (Errand err in errandsToModify) //Remove EmployeeId from errands so new employees of same name wont conflict
+			{
+				err.EmployeeId = null;
+			}
+		}
+
+		//Returns true if there was an employee of matching id that was updated.
+		public bool UpdateEmployee(Employee employee)
+		{
+			if (Employees.Where(emp => emp.EmployeeId.Equals(employee.EmployeeId)).Any()) //cannot attempt to update an errand that isnt in the database
+				{
+				Employee dbEmployee = context.Employees.FirstOrDefault(emp => emp.EmployeeId.Equals(employee.EmployeeId));
+				if (dbEmployee != null)
+				{
+					bool removeEmployeeFromErrands = false;
+					if(dbEmployee.DepartmentId != null && employee.DepartmentId != null)
+					{
+						if (!dbEmployee.DepartmentId.Equals(employee.DepartmentId))//changed department
+							removeEmployeeFromErrands = true;
+					}
+					if(dbEmployee.RoleTitle != null && employee.RoleTitle != null)
+					{
+						if ((dbEmployee.RoleTitle.Equals("Investigator") && !employee.RoleTitle.Equals("Investigator")))//changed from investigator to other role
+							removeEmployeeFromErrands = true;
+					}
+					if(removeEmployeeFromErrands)
+						RemoveEmployeeIdFromErrands(employee.EmployeeId);
+					dbEmployee.DepartmentId = employee.DepartmentId;
+					dbEmployee.EmployeeName = employee.EmployeeName;
+					//dbEmployee.EmployeeId = employee.EmployeeId; //Superflous
+					dbEmployee.RoleTitle = employee.RoleTitle;
+					context.SaveChanges();
+				}
+				return true;
+			}
+			else
+				return false;
+		}
+
+		public async Task<bool> AddEmployee(string employeeId)
+		{
+			Employee newEmployee = new Employee
+			{
+				EmployeeId = employeeId
+			};
+			if ((await GetEmployee(employeeId)) == null)
+			{
+				context.Employees.Add(newEmployee);
+				context.SaveChanges();
+				return true;
+			}
+			else
+				return false;
+		}
+
+		public bool DeleteEmployee(string employeeId)
+		{
+			if (Employees.Where(emp => emp.EmployeeId.Equals(employeeId)).Any()) //cannot attempt to delete an employee that isnt in the database
+			{
+				Employee dbEmployee = context.Employees.FirstOrDefault(emp => emp.EmployeeId.Equals(employeeId));
+
+				context.Employees.Remove(dbEmployee);
+				RemoveEmployeeIdFromErrands(employeeId);
+				context.SaveChanges();
+				return true;
+			}
+			return false;
 		}
 
 		public IQueryable<ErrandStatus> GetInvestigatorErrandStatuses()

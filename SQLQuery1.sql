@@ -1,1 +1,1 @@
-TRUNCATE TABLE [Sequences]
+TRUNCATE TABLE [Employees]

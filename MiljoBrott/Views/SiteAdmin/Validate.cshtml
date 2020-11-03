@@ -1,0 +1,19 @@
+﻿
+@{
+	Layout = "_SiteAdminLayout";
+}
+
+<div id="content">
+	<h2>Radera Användare</h2>
+	<p class="info">Du är inloggad som administratör</p>
+
+	<p class="label">
+		Är du säker på att du vill radera användare: @ViewBag.EmployeeId
+	</p>
+
+	<p>
+		<a class="button" asp-controller="SiteAdmin" asp-action="EmployeeModification" asp-route-id="@ViewBag.EmployeeId">Tillbaka</a>
+		<a class="button" asp-controller="SiteAdmin" asp-action="DeleteUser" asp-route-id="@ViewBag.EmployeeId">Bekräfta </a>
+	</p>
+
+
