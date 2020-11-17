@@ -2,26 +2,25 @@
 	For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-	Layout = "_CrimeContentLayout";
+	Layout = "_WorkerNavigationLayout";
 }
+@*@model IEnumerable<ErrandStatus>*@
+@model Errand
 
-@section workerNavigation {
+<div id="content">
+	<h2>Detaljer för ärendet</h2>
+	<p class="info">Du är inloggad som handläggare</p>
+
+	@await Component.InvokeAsync("CrimeContent", ViewBag.ID)
+
 	@*The Crime content part will be inbetween these 2 sections*@
-
-	<div id="content">
-		<h2>Detaljer för ärendet</h2>
-		<p class="info">Du är inloggad som handläggare</p>
-}
-
-@section workerOptions {
-	@*The Crime content part will be inbetween these 2 sections*@
-	<section id="bottomColumn">
-		<h3>Redigera ärende</h3>
+<section id="bottomColumn">
+	<form asp-controller="Investigator" asp-action="InvestigatorDataUpload" asp-route-id="@ViewBag.ID" method="post" enctype="multipart/form-data" multiple>
 		<p class="label">Händelser:</p>
-		<textarea name="events" rows="5" cols="60"></textarea>
+		<textarea asp-for="InvestigatorAction" rows="5" cols="60"></textarea>
 
 		<p class="label">Mer information:</p>
-		<textarea name="information" rows="5" cols="60"></textarea>
+		<textarea asp-for="InvestigatorInfo" rows="5" cols="60"></textarea>
 
 		<p class="label">Prover:</p>
 		<input type="file" name="loadSample" />
@@ -30,16 +29,13 @@
 		<input type="file" name="loadImage" />
 
 		<p class="label">Ändring av status:</p>
-		<select name="status">
+		<select asp-for="StatusId" asp-items="@(new SelectList(ViewBag.Statuses, "StatusId", "StatusName"))">
 			<option selected="selected">Välj</option>
-			<option value="stat1">Inrapporterad</option>
-			<option value="stat2">Ingen Åtgärd</option>
-			<option value="stat3">Påbörjad</option>
-			<option value="stat4">Klar</option>
 		</select>
 
 		<p>
 			<input class="button" type="submit" value="Spara ändringarna" />
 		</p>
-	</section>
-}
+	</form>
+</section>
+

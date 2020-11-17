@@ -1,0 +1,39 @@
+﻿@{
+	Layout = "_SiteAdminLayout";
+}
+
+@model CreateUserModel
+
+<div id="content">
+	<h2>Ny användare</h2>
+	<p class="info">Du är inloggad som administratör</p>
+	<h2>Skriv in inloggnings-uppgifter</h2>
+
+	<section id="leftColumn">
+		<h3>Ändra användare</h3>
+		<form asp-controller="SiteAdmin" asp-action="CreateUser" method="post">
+			<p>
+				<input type="hidden" name="isSubmitted" value="true" />
+			</p>
+			<p>
+				<label class="label" asp-for="UserName"></label><br />
+				<input asp-for="UserName" />
+				<span asp-validation-for="UserName"></span>
+			</p>
+			<p>
+				<label class="label" asp-for="Password"></label><br />
+				<input asp-for="Password" />
+				<span asp-validation-for="Password"></span>
+			</p>
+			<p>
+				<label class="label" asp-for="RepeatPassword"></label><br />
+				<input asp-for="RepeatPassword" />
+				<span asp-validation-for="RepeatPassword"></span>
+			</p>
+			<p>
+				<input class="button" type="submit" value="Skapa användare" />
+			</p>
+			<div asp-validation-summary="ModelOnly"></div>
+		</form>
+
+	</section>

@@ -1,9 +1,13 @@
 ﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+	For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-	Layout = "_WorkerStartLayout";
+	//Layout = "_WorkerStartLayout";
+	Layout = "_WorkerNavigationLayout";
+	//@model IEnvironmentalRepository
 }
+@model ErrandStatus
+
 <div id="content">
 	<h2>Ärenden</h2>
 	<p class="info">Du är inloggad som handläggare</p>
@@ -16,17 +20,22 @@
 			<td>&nbsp;</td>
 		</tr>
 		<tr>
-			<td>
-				<select name="status">
-					<option selected="selected">Välj alla</option>
-					<option value="stat0">Inrapporterad</option>
-					<option value="stat1">Ingen åtgärd</option>
-					<option value="stat2">Påbörjad</option>
-					<option value="stat3">Klar</option>
-				</select>
-			</td>
-			<td><input class="button" type="submit" value="Hämta lista" /></td>
-			<td><input name="casenumber" /></td>
-			<td><input class="button" type="submit" value="Sök" /></td>
+			<form asp-controller="Investigator" asp-action="StartInvestigator" method="post" enctype="multipart/form-data" multiple>
+				<td>
+					<select asp-for="StatusId" asp-items="@(new SelectList(ViewBag.Statuses, "StatusId", "StatusName"))">
+						<option selected="selected">Välj alla</option>
+					</select>
+					<input type="hidden" name="isCasenumber" value="false" />
+				</td>
+				<td><input class="button" type="submit" value="Hämta lista" /></td>
+
+			</form>
+			<form asp-controller="Investigator" asp-action="StartInvestigator" method="post" enctype="multipart/form-data" multiple>
+				<td><input name="casenumber" /></td>
+				<input type="hidden" name="isCasenumber" value="true" />
+				<td><input class="button" type="submit" value="Sök" /></td>
+			</form>
 		</tr>
 	</table>
+
+	@await Component.InvokeAsync("StartViewErrandContent", ViewBag.startViewErrandInputData)

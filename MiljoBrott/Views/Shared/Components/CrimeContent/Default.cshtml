@@ -1,0 +1,95 @@
+﻿@model CrimeContentErrandView
+
+
+<h3>Ärende: @Model.RefNumber</h3>
+<section id="leftColumn">
+	<h3>Anmälan</h3>
+	<p>
+		<span class="label">Typ av brott: </span><br />
+		<!-- Nedskräpning -->
+		@Model.TypeOfCrime
+	</p>
+	<p>
+		<span class="label">Brottsplats: </span><br />
+		@Model.Place
+		<!--Skogslunden vid Jensens gård -->
+	</p>
+	<p>
+		<span class="label">Brottsdatum: </span><br />
+		@Model.DateOfObservation.ToShortDateString()
+		<!--2020-04-24 -->
+	</p>
+	<p>
+		<span class="label">Anmälare: </span><br />
+		@Model.InformerName
+		<!--Maja Färjedal -->
+	</p>
+	<p>
+		<span class="label">Telefon: </span><br />
+		@Model.InformerPhone
+		<!--432-554 55 22 -->
+	</p>
+	<p>
+		<span class="label">Observationer:</span><br />
+		@Model.Observation
+		<!--Jag upptäckte soporna på en promenad den 24 april -->
+	</p>
+</section>
+
+<section id="rightColumn">
+	<h3>Utredning</h3>
+	<p>
+		<span class="label">Status:</span><br />
+		@Model.StatusName
+	</p>
+	<p>
+		<span class="label">Ansvarig avdelning: </span><br />
+		@Model.DepartmentName
+	</p>
+	<p>
+		<span class="label">Handläggare: </span><br />
+		@Model.EmployeeName
+	</p>
+	<p>
+		<span class="label">Provtagning: </span><br />
+		@{
+			if (Model.Samples.Count >= 1)
+			{
+				foreach (Sample sample in Model.Samples)
+				{
+					<a href="~/samples/@sample.SampleName">@sample.SampleName</a>
+				}
+			}
+			else
+			{
+				string s = "Finns inga prover.";
+				@s
+			}
+		}
+	</p>
+	<p>
+		<span class="label">Ytterligare information: </span><br />
+		@Model.InvestigatorInfo
+	</p>
+	<p>
+		<span class="label">Händelser: </span><br />
+		@Model.InvestigatorAction
+	</p>
+	<p>
+		<span class="label">Bilder: </span><br />
+		@{
+			if (Model.Pictures.Count >= 1)
+			{
+				foreach (Picture pic in Model.Pictures)
+				{
+					<a href="~/inv_images/@pic.PictureName">@pic.PictureName</a>
+				}
+			}
+			else
+			{
+				string s = "Finns inga bilder.";
+				@s
+			}
+		}
+	</p>
+</section>

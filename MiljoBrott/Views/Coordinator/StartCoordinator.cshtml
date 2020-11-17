@@ -1,9 +1,11 @@
 ﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+	For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-	Layout = "_WorkerStartLayout";
+	//Layout = "_WorkerStartLayout";
+	Layout = "_WorkerNavigationLayout";
 }
+@model IEnvironmentalRepository
 
 <div id="content">
 	<h2>Ärenden</h2>
@@ -18,27 +20,40 @@
 			<td>&nbsp;</td>
 		</tr>
 		<tr>
-			<td>
-				<select name="status">
-					<option selected="selected">Välj alla</option>
-					<option value="stat0">Inrapporterad</option>
-					<option value="stat1">Ingen åtgärd</option>
-					<option value="stat2">Påbörjad</option>
-					<option value="stat3">Klar</option>
-				</select>
-			</td>
-			<td>
-				<select name="department">
-					<option selected="selected">Välj alla</option>
-					<option value="teknik">Tekniska avloppshanteringen</option>
-					<option value="klimat">Klimat och energi</option>
-					<option value="miljo">Miljö och Hälsoskydd</option>
-					<option value="natur">Natur och Skogsvård</option>
-					<option value="avfall">Renhållning och Avfall</option>
-				</select>
-			</td>
+			<form asp-controller="Coordinator" asp-action="StartCoordinator" method="post" enctype="multipart/form-data" multiple>
+				<td>
+					<select name="statusId">
+						<option selected="selected">Välj alla</option>
+						@foreach (ErrandStatus es in Model.ErrandStatuses)
+						{
+							<option value="@es.StatusId">@es.StatusName</option>
+
+						}
+					</select>
+				</td>
+				<td>
+					<select name="departmentId">
+						<option selected="selected">Välj alla</option>
+						@foreach (Department dep in Model.Departments)
+						{
+							<option value="@dep.DepartmentId">@dep.DepartmentName</option>
+						}
+					</select>
+				</td>
+				<input type="hidden" name="isCasenumber" value="false" />
+				<td><input class="button" type="submit" value="Hämta lista" /></td>
+			</form>
+				@*
 			<td><input class="button" type="submit" value="Hämta lista" /></td>
 			<td><input name="casenumber" /></td>
 			<td><input class="button" type="submit" value="Sök" /></td>
+				*@
+				<form asp-controller="Coordinator" asp-action="StartCoordinator" method="post" enctype="multipart/form-data" multiple>
+					<td><input name="casenumber" /></td>
+					<input type="hidden" name="isCasenumber" value="true" />
+					<td><input class="button" type="submit" value="Sök" /></td>
+				</form>
 		</tr>
 	</table>
+
+	@await Component.InvokeAsync("StartViewErrandContent", ViewBag.startViewErrandInputData)
